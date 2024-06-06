@@ -12,7 +12,7 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
     int hasKey = 0;
-
+    boolean hasBoots = false;
     public Player(Panel gp, KeyHandler KH){
 
         this.gp = gp;
@@ -157,15 +157,20 @@ public class Player extends Entity {
         }
 
         //Sprinting
-        if(KH.shiftPressed){
+        if(KH.shiftPressed && hasBoots){
             if(direction.equals("upLeft") || direction.equals("upRight") || direction.equals("downLeft") ||
                     direction.equals("downRight")){
-                speed = 5;
+                speed = 4;
             } else {
                 speed = 6;
             }
         }else{
-            speed = 4;
+            if(direction.equals("upLeft") || direction.equals("upRight") || direction.equals("downLeft") ||
+                    direction.equals("downRight")){
+                speed = 3;
+            } else {
+                speed = 4;
+            }
         }
 
     }
@@ -176,11 +181,13 @@ public class Player extends Entity {
 
             switch(objName){
                 case "Key":
+                    gp.playSoundEffect(1);
                     hasKey++;
                     gp.obj[i] = null;
                     break;
                 case "Door":
                     if(hasKey > 0 && !gp.obj[i].Opened ){
+                        gp.playSoundEffect(2);
                         gp.obj[i].collision = false;
                         gp.obj[i].Opened = true;
                         hasKey--;
@@ -193,6 +200,7 @@ public class Player extends Entity {
                     break;
                 case "Chest":
                     if(!gp.obj[i].Opened){
+                        gp.playSoundEffect(3);
                         gp.obj[i].Opened = true;
                         try{
                             gp.obj[i].img =  ImageIO.read(getClass().getResource("/Player/chestOpened.png"));
@@ -200,6 +208,11 @@ public class Player extends Entity {
                             e.printStackTrace();
                         }
                     }
+                    break;
+                case "Boots":
+                    gp.playSoundEffect(1);
+                    hasBoots = true;
+                    gp.obj[i] = null;
                     break;
             }
         }

@@ -26,16 +26,20 @@ public class Panel extends JPanel implements Runnable{
 
     int FPS = 60;
 
-
+    // SYSTEM
     TileManager tileM = new TileManager(this);
     KeyHandler KH = new KeyHandler();
+    Sound sound = new Sound();
     Thread gameThread; // Keeps the program running til something stops it
     CollisionChecker cChecker = new CollisionChecker(this);
     assetSetter aSetter = new assetSetter(this);
+
+
+
+    // ENTITY AND OBJECT
     Player player = new Player(this, KH);
-
-
     public superObject[] obj = new superObject[10];
+
     public Panel(){
 
         this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
@@ -47,6 +51,7 @@ public class Panel extends JPanel implements Runnable{
 
     public void setUpGame(){
         aSetter.setObject();
+        playMusic(0);
     }
 
 
@@ -112,5 +117,20 @@ public class Panel extends JPanel implements Runnable{
         player.draw(g2, TileSize);
         g2.dispose();
 
+    }
+
+    public void playMusic(int i){
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+
+    public void stopMusic(){
+        sound.stop();
+    }
+
+    public void playSoundEffect(int i){
+        sound.setFile(i);
+        sound.play();
     }
 }
