@@ -2,10 +2,9 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 public class OBJ_Chest extends superObject{
-    public OBJ_Chest(superObject item) {
+    public OBJ_Chest() {
         name = "Chest";
         Opened = false;
-        this.item = item;
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/chestClosed.png"));

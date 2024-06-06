@@ -12,7 +12,6 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
     int hasKey = 0;
-    boolean hasBoots = false;
 
     public Player(Panel gp, KeyHandler KH){
 
@@ -158,13 +157,16 @@ public class Player extends Entity {
         }
 
         //Sprinting
-        if(KH.shiftPressed && this.hasBoots){
-            speed = 8;
+        if(KH.shiftPressed){
+            if(direction.equals("upLeft") || direction.equals("upRight") || direction.equals("downLeft") ||
+                    direction.equals("downRight")){
+                speed = 5;
+            } else {
+                speed = 6;
+            }
         }else{
             speed = 4;
         }
-
-
 
     }
 
@@ -192,18 +194,12 @@ public class Player extends Entity {
                 case "Chest":
                     if(!gp.obj[i].Opened){
                         gp.obj[i].Opened = true;
-                        gp.obj[i].item.revealed = true;
                         try{
                             gp.obj[i].img =  ImageIO.read(getClass().getResource("/Player/chestOpened.png"));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                    break;
-
-                case "Boots":
-                    hasBoots = true;
-                    gp.obj[i] = null;
                     break;
             }
         }

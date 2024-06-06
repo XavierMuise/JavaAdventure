@@ -12,7 +12,7 @@ public class Main{
         Panel gamePanel = new Panel();
         window.add(gamePanel);
 
-        window.pack(); // makes the window fit the preferred size of our gaamePanel
+        window.pack(); // makes the window fit the preferred size of our gamePanel
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
