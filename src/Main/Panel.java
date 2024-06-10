@@ -29,10 +29,12 @@ public class Panel extends JPanel implements Runnable{
     // SYSTEM
     TileManager tileM = new TileManager(this);
     KeyHandler KH = new KeyHandler();
-    Sound sound = new Sound();
+    Sound music = new Sound();
+    Sound soundEffects = new Sound();
     Thread gameThread; // Keeps the program running til something stops it
     CollisionChecker cChecker = new CollisionChecker(this);
     assetSetter aSetter = new assetSetter(this);
+    UI ui = new UI(this);
 
 
 
@@ -104,6 +106,7 @@ public class Panel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
+
         //Tiles
         tileM.draw(g2);
 
@@ -113,24 +116,26 @@ public class Panel extends JPanel implements Runnable{
                 obj[i].draw(g2, this);
             }
         }
-        //Players
+        //Player
         player.draw(g2, TileSize);
-        g2.dispose();
+        // UI
+        ui.draw(g2);
 
+        g2.dispose();
     }
 
     public void playMusic(int i){
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+        music.setFile(i);
+        music.play();
+        music.loop();
     }
 
     public void stopMusic(){
-        sound.stop();
+        music.stop();
     }
 
     public void playSoundEffect(int i){
-        sound.setFile(i);
-        sound.play();
+        soundEffects.setFile(i);
+        soundEffects.play();
     }
 }

@@ -182,6 +182,7 @@ public class Player extends Entity {
             switch(objName){
                 case "Key":
                     gp.playSoundEffect(1);
+                    gp.ui.showMessage("+ 1 Key ");
                     hasKey++;
                     gp.obj[i] = null;
                     break;
