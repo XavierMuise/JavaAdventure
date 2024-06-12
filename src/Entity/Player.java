@@ -44,27 +44,36 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage(){
+            up0 = setUpPlayerimg("boy_up_0");
+            up1 = setUpPlayerimg("boy_up_1");
+            up2 = setUpPlayerimg("boy_up_2");
 
-        try {
-            up0 = ImageIO.read(getClass().getResource("/Player/boy_up_0.png"));
-            up1 = ImageIO.read(getClass().getResource("/Player/boy_up_1.png"));
-            up2 = ImageIO.read(getClass().getResource("/Player/boy_up_2.png"));
+            down0 = setUpPlayerimg("boy_down_0");
+            down1 = setUpPlayerimg("boy_down_1");
+            down2 = setUpPlayerimg("boy_down_2");
 
-            down0 = ImageIO.read(getClass().getResource("/Player/boy_down_0.png"));
-            down1 = ImageIO.read(getClass().getResource("/Player/boy_down_1.png"));
-            down2 = ImageIO.read(getClass().getResource("/Player/boy_down_2.png"));
+            left0 = setUpPlayerimg("boy_left_0");
+            left1 = setUpPlayerimg("boy_left_1");
+            left2 = setUpPlayerimg("boy_left_2");
 
-            left0 = ImageIO.read(getClass().getResource("/Player/boy_left_0.png"));
-            left1 = ImageIO.read(getClass().getResource("/Player/boy_left_1.png"));
-            left2 = ImageIO.read(getClass().getResource("/Player/boy_left_2.png"));
+            right0 = setUpPlayerimg("boy_right_0");
+            right1 = setUpPlayerimg("boy_right_1");
+            right2 = setUpPlayerimg("boy_right_2");
 
-            right0 = ImageIO.read(getClass().getResource("/Player/boy_right_0.png"));
-            right1 = ImageIO.read(getClass().getResource("/Player/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResource("/Player/boy_right_2.png"));
+    }
 
-        } catch(IOException e){
+    public BufferedImage setUpPlayerimg(String imgPath){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage ScaledImg = null;
+
+        try{
+            ScaledImg = ImageIO.read(getClass().getResource("/Player/" + imgPath + ".png"));
+            ScaledImg = uTool.scaleImg(ScaledImg, gp.TileSize, gp.TileSize);
+
+        }catch(IOException e){
             e.printStackTrace();
         }
+        return ScaledImg;
     }
 
     public void update(){
@@ -192,6 +201,7 @@ public class Player extends Entity {
                         gp.obj[i].collision = false;
                         gp.obj[i].Opened = true;
                         hasKey--;
+                        gp.ui.showMessage("- 1 Key ");
                         try{
                             gp.obj[i].img = ImageIO.read(getClass().getResource("/Player/doorOpened.png"));
                         } catch (IOException e) {
@@ -203,6 +213,7 @@ public class Player extends Entity {
                     if(!gp.obj[i].Opened){
                         gp.playSoundEffect(3);
                         gp.obj[i].Opened = true;
+                        gp.ui.gameFinished = true;
                         try{
                             gp.obj[i].img =  ImageIO.read(getClass().getResource("/Player/chestOpened.png"));
                         } catch (IOException e) {
@@ -214,6 +225,7 @@ public class Player extends Entity {
                     gp.playSoundEffect(1);
                     hasBoots = true;
                     gp.obj[i] = null;
+                    gp.ui.showMessage("Speed + 2 ");
                     break;
             }
         }
@@ -314,6 +326,6 @@ public class Player extends Entity {
                 break;
         }
 
-        g2.drawImage(img, screenX, screenY, TileSize, TileSize, null);
+        g2.drawImage(img, screenX, screenY,null);
     }
 }

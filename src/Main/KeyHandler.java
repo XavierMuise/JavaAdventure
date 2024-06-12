@@ -5,6 +5,7 @@ public class KeyHandler implements KeyListener{
 
 
     public boolean upPressed, leftPressed, rightPressed, downPressed, shiftPressed;
+    public boolean debugMode;
     // NOT used 
     public void keyTyped(KeyEvent e) {
         
@@ -31,6 +32,9 @@ public class KeyHandler implements KeyListener{
         if(code == KeyEvent.VK_SHIFT ){
             shiftPressed = true;
         }
+        if(code == KeyEvent.VK_T){
+            debugMode = true;
+        }
 
     }
 
@@ -55,6 +59,9 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_SHIFT ){
             shiftPressed = false;
+        }
+        if(code == KeyEvent.VK_T){
+            debugMode = false;
         }
 
     }

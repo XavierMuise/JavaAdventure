@@ -106,6 +106,11 @@ public class Panel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
+        // Debug
+
+        long drawStart = 0;
+        drawStart = System.nanoTime();
+
 
         //Tiles
         tileM.draw(g2);
@@ -120,6 +125,18 @@ public class Panel extends JPanel implements Runnable{
         player.draw(g2, TileSize);
         // UI
         ui.draw(g2);
+
+        // debug 2
+        long drawEnd = 0;
+        drawEnd = System.nanoTime();
+        long time = drawEnd - drawStart;
+
+        if(KH.debugMode) {
+            g2.setFont(ui.Arial_40);
+            g2.setColor(Color.white);
+            g2.drawString("drawTime : " + time, TileSize,TileSize);
+            System.out.println(time);
+        }
 
         g2.dispose();
     }

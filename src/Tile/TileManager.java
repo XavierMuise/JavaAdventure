@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,37 +24,29 @@ public class TileManager {
     }
 
     public void getTileImage(){
-
-        try{
-            tile[0] = new Tile();
-            tile[0].img = ImageIO.read(getClass().getResource("/resources/Tiles/Grass.png"));
-
-            tile[1] = new Tile();
-            tile[1].img = ImageIO.read(getClass().getResource("/resources/Tiles/Wall.png"));
-            tile[1].collision = true;
-
-            tile[2] = new Tile();
-            tile[2].img = ImageIO.read(getClass().getResource("/resources/Tiles/Water.png"));
-            tile[2].collision = true;
-
-            tile[3] = new Tile();
-            tile[3].img = ImageIO.read(getClass().getResource("/resources/Tiles/Earth.png"));
-
-            tile[4] = new Tile();
-            tile[4].img = ImageIO.read(getClass().getResource("/resources/Tiles/Tree.png"));
-            tile[4].collision = true;
-
-            tile[5] = new Tile();
-            tile[5].img = ImageIO.read(getClass().getResource("/resources/Tiles/Sand.png"));
-
-
-
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
+            setUpTile(0, "Grass", false);
+            setUpTile(1, "Wall", true);
+            setUpTile(2, "Water", true);
+            setUpTile(3, "Earth", false);
+            setUpTile(4, "Tree", true);
+            setUpTile(5, "Sand", false);
     }
 
+    public void setUpTile(int index, String imgPath, boolean collision){
+
+        UtilityTool uTool = new UtilityTool();
+
+        try{
+            tile[index] = new Tile();
+            tile[index].img = ImageIO.read(getClass().getResource("/resources/Tiles/" + imgPath + ".png"));
+            tile[index].img = uTool.scaleImg(tile[index].img, gp.TileSize, gp.TileSize);
+            tile[index].collision = collision;
+
+        }catch(IOException e ){
+            e.printStackTrace();
+
+        }
+    }
     public void loadMap(String filePath){
 
         try {
@@ -107,7 +100,7 @@ public class TileManager {
                     worldX - gp.TileSize< gp.player.worldX + gp.player.screenX &&
                     worldY + gp.TileSize> gp.player.worldY - gp.player.screenY &&
                     worldY - gp.TileSize< gp.player.worldY + gp.player.screenY) {
-                g2.drawImage(tile[tileNum].img, screenX, screenY, gp.TileSize, gp.TileSize, null);
+                g2.drawImage(tile[tileNum].img, screenX, screenY, null);
             }
            worldCol++;
 
