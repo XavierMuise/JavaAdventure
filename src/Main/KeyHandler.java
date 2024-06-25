@@ -3,9 +3,15 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{
 
+    public Panel gp;
 
     public boolean upPressed, leftPressed, rightPressed, downPressed, shiftPressed;
     public boolean debugMode;
+
+
+    public KeyHandler(Panel gp){
+        this.gp = gp;
+    }
     // NOT used 
     public void keyTyped(KeyEvent e) {
         
@@ -34,6 +40,13 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_T){
             debugMode = true;
+        }
+        if(code == KeyEvent.VK_ESCAPE ){
+            if(gp.gameState == gp.playState) {
+                gp.gameState = gp.pauseState;
+            } else if (gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
         }
 
     }

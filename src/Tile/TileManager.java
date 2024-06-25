@@ -14,22 +14,68 @@ public class TileManager {
 
     public TileManager(Panel gp){
         this.gp = gp;
-        tile = new Tile[10];
+        tile = new Tile[50];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
         
-        loadMap("resources/Maps/World01.txt");
+        loadMap("resources/Maps/World02.txt");
 
     }
 
     public void getTileImage(){
-            setUpTile(0, "Grass", false);
-            setUpTile(1, "Wall", true);
-            setUpTile(2, "Water", true);
-            setUpTile(3, "Earth", false);
-            setUpTile(4, "Tree", true);
-            setUpTile(5, "Sand", false);
+
+        // PLACEHOLDERS
+        setUpTile(0, "Grass", false);
+        setUpTile(1, "Grass", false);
+        setUpTile(2, "Grass", false);
+        setUpTile(3, "Grass", false);
+        setUpTile(4, "Grass", false);
+        setUpTile(5, "Grass", false);
+        setUpTile(6, "Grass", false);
+        setUpTile(7, "Grass", false);
+        setUpTile(8, "Grass", false);
+        setUpTile(9, "Grass", false);
+
+        // GRASS
+        setUpTile(10, "Grass", false);
+        setUpTile(11, "TallGrass", false);
+
+        // WATER
+        setUpTile(12, "Water", true);
+        setUpTile(13, "ShimmeringWater", true);
+        setUpTile(14, "GrassWaterTopLeft", true);
+        setUpTile(15, "GrassWaterTop", true);
+        setUpTile(16, "GrassWaterTopRight", true);
+        setUpTile(17, "GrassWaterLeft", true);
+        setUpTile(18, "GrassWaterRight", true);
+        setUpTile(19, "GrassWaterBottomLeft", true);
+        setUpTile(20, "GrassWaterBottom", true);
+        setUpTile(21, "GrassWaterBottomRight", true);
+        setUpTile(22, "WaterGrassTopLeft", true);
+        setUpTile(23, "WaterGrassTopRight", true);
+        setUpTile(24, "WaterGrassBottomLeft", true);
+        setUpTile(25, "WaterGrassBottomRight", true);
+
+        // PATHS
+        setUpTile(26, "Path", false);
+        setUpTile(27, "PathGrassBottomRight", false);
+        setUpTile(28, "PathGrassBottom", false);
+        setUpTile(29, "PathGrassBottomLeft", false);
+        setUpTile(30, "PathGrassRight", false);
+        setUpTile(31, "PathGrassLeft", false);
+        setUpTile(32, "PathGrassTopRight", false);
+        setUpTile(33, "PathGrassTop", false);
+        setUpTile(34, "PathGrassTopLeft", false);
+        setUpTile(35, "GrassPathTopLeft", false);
+        setUpTile(36, "GrassPathTopRight", false);
+        setUpTile(37, "GrassPathBottomLeft", false);
+        setUpTile(38, "GrassPathBottomRight", false);
+
+        // MISC
+        setUpTile(39, "Earth", false);
+        setUpTile(40, "Wall", true);
+        setUpTile(41, "Tree", true);
     }
 
     public void setUpTile(int index, String imgPath, boolean collision){

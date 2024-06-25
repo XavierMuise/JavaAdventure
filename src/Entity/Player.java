@@ -11,7 +11,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-    int hasKey = 0;
+    // int hasKey = 0;
     boolean hasBoots = false;
     public Player(Panel gp, KeyHandler KH){
 
@@ -186,48 +186,7 @@ public class Player extends Entity {
 
     public void pickUpObject(int i){
         if(i != 999){
-            String objName = gp.obj[i].name;
 
-            switch(objName){
-                case "Key":
-                    gp.playSoundEffect(1);
-                    gp.ui.showMessage("+ 1 Key ");
-                    hasKey++;
-                    gp.obj[i] = null;
-                    break;
-                case "Door":
-                    if(hasKey > 0 && !gp.obj[i].Opened ){
-                        gp.playSoundEffect(2);
-                        gp.obj[i].collision = false;
-                        gp.obj[i].Opened = true;
-                        hasKey--;
-                        gp.ui.showMessage("- 1 Key ");
-                        try{
-                            gp.obj[i].img = ImageIO.read(getClass().getResource("/Player/doorOpened.png"));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    break;
-                case "Chest":
-                    if(!gp.obj[i].Opened){
-                        gp.playSoundEffect(3);
-                        gp.obj[i].Opened = true;
-                        gp.ui.gameFinished = true;
-                        try{
-                            gp.obj[i].img =  ImageIO.read(getClass().getResource("/Player/chestOpened.png"));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    break;
-                case "Boots":
-                    gp.playSoundEffect(1);
-                    hasBoots = true;
-                    gp.obj[i] = null;
-                    gp.ui.showMessage("Speed + 2 ");
-                    break;
-            }
         }
     }
 
