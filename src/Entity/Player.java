@@ -5,8 +5,7 @@ import javax.imageio.ImageIO;
 
 
 public class Player extends Entity {
-    
-    Panel gp;
+
     KeyHandler KH;
 
     public final int screenX;
@@ -14,8 +13,8 @@ public class Player extends Entity {
     // int hasKey = 0;
     boolean hasBoots = false;
     public Player(Panel gp, KeyHandler KH){
+        super(gp);
 
-        this.gp = gp;
         this.KH = KH;
 
         screenX = gp.ScreenWidth/2 - gp.TileSize/2;
@@ -44,37 +43,25 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage(){
-            up0 = setUpPlayerimg("boy_up_0");
-            up1 = setUpPlayerimg("boy_up_1");
-            up2 = setUpPlayerimg("boy_up_2");
+            up0 = SetUpImg("/Player/boy_up_0");
+            up1 = SetUpImg("/Player/boy_up_1");
+            up2 = SetUpImg("/Player/boy_up_2");
 
-            down0 = setUpPlayerimg("boy_down_0");
-            down1 = setUpPlayerimg("boy_down_1");
-            down2 = setUpPlayerimg("boy_down_2");
+            down0 = SetUpImg("/Player/boy_down_0");
+            down1 = SetUpImg("/Player/boy_down_1");
+            down2 = SetUpImg("/Player/boy_down_2");
 
-            left0 = setUpPlayerimg("boy_left_0");
-            left1 = setUpPlayerimg("boy_left_1");
-            left2 = setUpPlayerimg("boy_left_2");
+            left0 = SetUpImg("/Player/boy_left_0");
+            left1 = SetUpImg("/Player/boy_left_1");
+            left2 = SetUpImg("/Player/boy_left_2");
 
-            right0 = setUpPlayerimg("boy_right_0");
-            right1 = setUpPlayerimg("boy_right_1");
-            right2 = setUpPlayerimg("boy_right_2");
+            right0 = SetUpImg("/Player/boy_right_0");
+            right1 = SetUpImg("/Player/boy_right_1");
+            right2 = SetUpImg("/Player/boy_right_2");
 
     }
 
-    public BufferedImage setUpPlayerimg(String imgPath){
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage ScaledImg = null;
 
-        try{
-            ScaledImg = ImageIO.read(getClass().getResource("/Player/" + imgPath + ".png"));
-            ScaledImg = uTool.scaleImg(ScaledImg, gp.TileSize, gp.TileSize);
-
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return ScaledImg;
-    }
 
     public void update(){
 
@@ -112,6 +99,10 @@ public class Player extends Entity {
             //CHECK OBJECT COLLISION
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
+
+            //CHECK NPC COLLISION
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+            interactNPC(npcIndex);
 
             if(!collisionOn){
                 switch(direction){
@@ -155,6 +146,10 @@ public class Player extends Entity {
                 }else if(spriteNum == 1){
                     spriteNum = 2;
                 }else if(spriteNum == 2){
+                    spriteNum = 3;
+                } else if(spriteNum == 3){
+                    spriteNum = 4;
+                } else if(spriteNum == 4){
                     spriteNum = 1;
                 }
                 spriteCounter = 0;
@@ -190,96 +185,59 @@ public class Player extends Entity {
         }
     }
 
+    public void interactNPC(int i){
+        if(i != 999){
+            System.out.println("interacting with " + gp.npc[i]);
+        }
+
+    }
+
     public void draw(Graphics2D g2, int TileSize){
         
         BufferedImage img = null;
 
         switch(direction){
             case "up":
-                if(spriteNum == 0) {
+                if(spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
                     img = up0;
                 }
                 if(spriteNum == 1) {
                     img = up1;
                 }
-                if(spriteNum == 2) {
+                if(spriteNum == 3) {
                     img = up2;
                 }
                 break;
             case "down":
-                if(spriteNum == 0) {
+                if(spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
                     img = down0;
                 }
                 if(spriteNum == 1) {
                     img = down1;
                 }
-                if(spriteNum == 2) {
+                if(spriteNum == 3) {
                     img = down2;
                 }
                 break;
-            case "left":
-                if(spriteNum == 0) {
+            case "left", "upLeft", "downLeft":
+                if(spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
                     img = left0;
                 }
                 if(spriteNum == 1) {
                     img = left1;
                 }
-                if(spriteNum == 2) {
+                if(spriteNum == 3) {
                     img = left2;
                 }
                 break;
-            case "right":
-                if(spriteNum == 0) {
+            case "right", "upRight", "downRight":
+                if(spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
                     img = right0;
                 }
                 if(spriteNum == 1) {
                     img = right1;
                 }
-                if(spriteNum == 2) {
-                    img = right2;
-                }
-                break;
-            case "upLeft":
-                if(spriteNum == 0) {
-                    img = left0;
-                }
-                if(spriteNum == 1) {
-                    img = left1;
-                }
-                if(spriteNum == 2) {
-                    img = left2;
-                }
-                break;
-            case "upRight":
-                if(spriteNum == 0) {
-                    img = right0;
-                }
-                if(spriteNum == 1) {
-                    img = right1;
-                }
-                if(spriteNum == 2) {
-                    img = right2;
-                }
-                break;
-            case "downLeft":
-                if(spriteNum == 0) {
-                    img = left0;
-                }
-                if(spriteNum == 1) {
-                    img = left1;
-                }
-                if(spriteNum == 2) {
-                    img = left2;
-                }
-                break;
-            case "downRight":
-                if(spriteNum == 0) {
-                    img = right0;
-                }
-                if(spriteNum == 1) {
-                    img = right1;
-                }
-                if(spriteNum == 2) {
+                if(spriteNum == 3) {
                     img = right2;
                 }
                 break;

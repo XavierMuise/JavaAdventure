@@ -46,6 +46,7 @@ public class Panel extends JPanel implements Runnable{
     // ENTITY AND OBJECT
     Player player = new Player(this, KH);
     public superObject[] obj = new superObject[10];
+    public Entity[] npc = new Entity[10];
 
     public Panel(){
 
@@ -58,6 +59,7 @@ public class Panel extends JPanel implements Runnable{
 
     public void setUpGame(){
         aSetter.setObject();
+        aSetter.setNPC();
         playMusic(0);
         gameState = playState;
     }
@@ -105,7 +107,15 @@ public class Panel extends JPanel implements Runnable{
     public void update(){
 
         if(gameState == playState) {
+            //PLAYER
             player.update();
+
+            //NPC
+            for(Entity e : npc){
+                if(e != null) {
+                    e.update();
+                }
+            }
         } else if (gameState == pauseState) {
 
         }
@@ -132,10 +142,22 @@ public class Panel extends JPanel implements Runnable{
                 obj[i].draw(g2, this);
             }
         }
+        // NPC
+        for(int i = 0; i < npc.length; i++){
+            if(npc[i] != null){
+                npc[i].draw(g2);
+            }
+        }
+
+
         //Player
         player.draw(g2, TileSize);
         // UI
         ui.draw(g2);
+
+
+
+
 
         // debug 2
         long drawEnd = 0;
