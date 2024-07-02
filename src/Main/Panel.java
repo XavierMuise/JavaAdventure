@@ -28,7 +28,7 @@ public class Panel extends JPanel implements Runnable{
 
     // SYSTEM
     TileManager tileM = new TileManager(this);
-    KeyHandler KH = new KeyHandler(this);
+    public KeyHandler KH = new KeyHandler(this);
     Sound music = new Sound();
     Sound soundEffects = new Sound();
     Thread gameThread; // Keeps the program running til something stops it
@@ -40,6 +40,7 @@ public class Panel extends JPanel implements Runnable{
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int dialogueState = 3;
 
 
 

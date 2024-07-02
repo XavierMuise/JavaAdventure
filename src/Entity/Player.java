@@ -10,7 +10,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-    // int hasKey = 0;
+    public int NPC;
     boolean hasBoots = false;
     public Player(Panel gp, KeyHandler KH){
         super(gp);
@@ -186,9 +186,16 @@ public class Player extends Entity {
     }
 
     public void interactNPC(int i){
+
         if(i != 999){
-            System.out.println("interacting with " + gp.npc[i]);
+
+            if(gp.KH.interactPressed) {
+                NPC = i;
+                gp.gameState = gp.dialogueState;
+                gp.npc[i].speak();
+            }
         }
+        gp.KH.interactPressed = false;
 
     }
 

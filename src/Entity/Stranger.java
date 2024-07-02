@@ -11,7 +11,7 @@ public class Stranger extends Entity {
         // COORDINATES
         worldX = gp.TileSize * 10;
         worldY = gp.TileSize * 9;
-        
+        setDialogue();
         getNPCimage();
     }
 
@@ -32,11 +32,23 @@ public class Stranger extends Entity {
         right1 = SetUpImg("/NPC/HoodedStranger");
         right2 = SetUpImg("/NPC/HoodedStranger");
     }
+
+    public void setDialogue(){
+        dialogues = new String[12];
+        dialogues[0] = "Greetings Traveler.";
+        dialogues[1] = "Where are you from? your clothing seems \nunusual.";
+        dialogues[2] = "...";
+        dialogues[3] = "...You... Dont know?";
+        dialogues[4] = "How did you get here?";
+        dialogues[5] = "...";
+        dialogues[6] = "You dont remember?";
+        dialogues[7] = "It's possible you have amnesia...";
+        dialogues[8] = "Id recommend heading to Monta village just \nup North.";
+        dialogues[9] = "...";
+        dialogues[10] = "Not a problem, Best of luck on your travels.";
+    }
     // doesnt move
     public void update(){
 
     }
-
-
-
 }

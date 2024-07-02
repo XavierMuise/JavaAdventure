@@ -13,7 +13,7 @@ public class Rebecca extends Entity{
         // COORDINATES
         worldX = gp.TileSize * 25;
         worldY = gp.TileSize * 19;
-
+        setDialogue();
         getNPCimage();
     }
 
@@ -33,6 +33,14 @@ public class Rebecca extends Entity{
         right0 = SetUpImg("/NPC/rebeca");
         right1 = SetUpImg("/NPC/rebeca");
         right2 = SetUpImg("/NPC/rebeca");
+    }
+
+    public void setDialogue(){
+        dialogues = new String[4];
+        dialogues[0] = "What do YOU want?";
+        dialogues[1] = "...";
+        dialogues[2] = "Get out of my face shithead.";
+
     }
 
 
@@ -55,6 +63,5 @@ public class Rebecca extends Entity{
             actionCounter = 0;
         }
     }
-
 
 }

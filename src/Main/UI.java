@@ -8,21 +8,22 @@ public class UI {
     Panel gp;
     Graphics2D g2;
     Font Arial_40, Arial_80B;
-    // BufferedImage keyImg;
+
 
     public boolean messageOn;
     public String message = "";
     public int msgCount = 0;
     public boolean gameFinished = false;
-    public double playTime;
-    public DecimalFormat dFormat = new DecimalFormat("#0.00");
+
+    public String currentDialogue = "";
+
+
 
     public UI(Panel gp){
         this.gp = gp;
         this.Arial_40 = new Font("Arial", Font.PLAIN, 40);
         this.Arial_80B = new Font("Arial", Font.BOLD, 80);
-        // OBJ_Key k = new OBJ_Key(gp);
-        // keyImg = k.img;
+
     }
 
     public void showMessage(String msg){
@@ -39,6 +40,8 @@ public class UI {
             // health and shit
         } else if(gp.gameState == gp.pauseState){
             drawPauseScreen();
+        } else if(gp.gameState == gp.dialogueState){
+            drawDialogueScreen();
         }
     }
 
@@ -56,4 +59,28 @@ public class UI {
     }
 
 
+    public void drawDialogueScreen(){
+
+        // WINDOW
+        int x = gp.TileSize;
+        int y = gp.TileSize * 8;
+        int width = gp.ScreenWidth - (gp.TileSize*2);
+        int height = gp.TileSize*4;
+        drawDialogueWindow(x,y,width, height);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+        x += gp.TileSize;
+        y += gp.TileSize;
+        g2.drawString(currentDialogue,x,y);
+    }
+
+    public void drawDialogueWindow(int x, int y, int width, int height){
+        Color c =  new Color(0,0,0, 210);
+        g2.setColor(c);
+        g2.fillRoundRect(x, y, width, height, 35, 35);
+        c = new Color(255,255,255);
+        g2.setColor(c);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
+    }
 }
