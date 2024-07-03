@@ -1,14 +1,12 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.text.DecimalFormat;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class UI {
 
     Panel gp;
     Graphics2D g2;
-    Font Arial_40, Arial_80B;
-
+    Font maruMonica;
 
     public boolean messageOn;
     public String message = "";
@@ -21,8 +19,15 @@ public class UI {
 
     public UI(Panel gp){
         this.gp = gp;
-        this.Arial_40 = new Font("Arial", Font.PLAIN, 40);
-        this.Arial_80B = new Font("Arial", Font.BOLD, 80);
+
+        try {
+            InputStream is = getClass().getResourceAsStream("Font/x12y16pxMaruMonica.ttf");
+            this.maruMonica = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (FontFormatException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -33,7 +38,7 @@ public class UI {
 
     public void draw(Graphics2D g2){
         this.g2 = g2;
-        g2.setFont(Arial_40);
+        g2.setFont(maruMonica);
         g2.setColor(Color.white);
 
         if(gp.gameState == gp.playState){
@@ -71,7 +76,10 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
         x += gp.TileSize;
         y += gp.TileSize;
-        g2.drawString(currentDialogue,x,y);
+        for(String line : currentDialogue.split("\n")) {
+            g2.drawString(line, x, y);
+            y += 40;
+        }
     }
 
     public void drawDialogueWindow(int x, int y, int width, int height){

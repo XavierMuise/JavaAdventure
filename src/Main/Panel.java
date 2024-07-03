@@ -43,14 +43,12 @@ public class Panel extends JPanel implements Runnable{
     public final int dialogueState = 3;
 
 
-
     // ENTITY AND OBJECT
     Player player = new Player(this, KH);
     public superObject[] obj = new superObject[10];
     public Entity[] npc = new Entity[10];
 
     public Panel(){
-
         this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
@@ -166,7 +164,7 @@ public class Panel extends JPanel implements Runnable{
         long time = drawEnd - drawStart;
 
         if(KH.debugMode) {
-            g2.setFont(ui.Arial_40);
+            g2.setFont(ui.maruMonica);
             g2.setColor(Color.white);
             g2.drawString("drawTime : " + time, TileSize,TileSize);
             System.out.println(time);
