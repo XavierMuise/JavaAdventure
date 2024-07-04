@@ -1,4 +1,6 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -12,8 +14,11 @@ public class UI {
     public String message = "";
     public int msgCount = 0;
     public boolean gameFinished = false;
+    BufferedImage FullHeart, HalfHeart, EmptyHeart;
 
     public String currentDialogue = "";
+
+    public int commandNum = 0 ;
 
 
 
@@ -23,6 +28,9 @@ public class UI {
         try {
             InputStream is = getClass().getResourceAsStream("Font/x12y16pxMaruMonica.ttf");
             this.maruMonica = Font.createFont(Font.TRUETYPE_FONT, is);
+            FullHeart = SetUpImg("/HUD/HeartFull");
+            HalfHeart = SetUpImg("/HUD/HeartHalf");
+            EmptyHeart = SetUpImg("/HUD/HeartEmpty");
         } catch (FontFormatException e){
             e.printStackTrace();
         } catch(IOException e){
@@ -41,29 +49,131 @@ public class UI {
         g2.setFont(maruMonica);
         g2.setColor(Color.white);
 
-        if(gp.gameState == gp.playState){
-            // health and shit
+        if(gp.gameState == gp.titleState){
+            drawTitleScreen();
+        }
+        else if(gp.gameState == gp.playState){
+            drawHealthBar();
         } else if(gp.gameState == gp.pauseState){
             drawPauseScreen();
+            drawHealthBar();
         } else if(gp.gameState == gp.dialogueState){
             drawDialogueScreen();
+            drawHealthBar();
         }
     }
+    public void drawHealthBar(){
+        int x = gp.TileSize/4;
+        int y = 0;
 
-    public void drawPauseScreen(){
-        String txt = "PAUSED";
-        int x = getXCenteredText(txt);
-        int y = gp.ScreenHeight/2;
-        g2.drawString(txt, x, y);
+        // DRAW MAX LIFE
+        for(int i = 0; i < gp.player.maxHP/2; i++){
+            if(i == 10){
+                y = gp.TileSize - gp.TileSize/4;
+                x = gp.TileSize/4;
+            }
+            g2.drawImage(EmptyHeart, x, y, gp.TileSize - gp.TileSize/4, gp.TileSize - gp.TileSize/4, null);
+            x += gp.TileSize - gp.TileSize/4;
+        }
+
+        x = gp.TileSize/4;
+        y = 0;
+        int i = 0;
+
+        // DRAW CURRENT LIFE
+        while(i < gp.player.HP){
+            if(i == 20){
+                y = gp.TileSize - gp.TileSize/4;
+                x = gp.TileSize/4;
+            }
+            g2.drawImage(HalfHeart, x, y, gp.TileSize - gp.TileSize/4, gp.TileSize - gp.TileSize/4, null);
+            i++;
+            if( i < gp.player.HP){
+                g2.drawImage(FullHeart, x, y, gp.TileSize - gp.TileSize/4, gp.TileSize - gp.TileSize/4, null);
+            }
+            i++;
+            x += gp.TileSize - gp.TileSize/4;
+        }
 
     }
 
+    public void drawTitleScreen(){
+        // TITLE BACKGROUND
+        g2.setColor(Color.blue);
+        g2.fillRect(0,0, gp.ScreenWidth, gp.ScreenHeight);
+        // TITLE NAME
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
+        String text = "Placeholder Name"; // cant think of a title
+        int x = getXCenteredText(text);
+        int y = gp.TileSize * 3;
+        // TITLE SHADOW
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 4, y + 4);
+        // TITLE MAIN COLOR
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+
+        // PLAYER IMG
+        x = gp.ScreenWidth/2 - gp.TileSize;
+        y += gp.TileSize*2;
+        g2.drawImage(gp.player.down0, x,y, gp.TileSize*2, gp.TileSize*2, null);
+
+        // MENU
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
+        text = "NEW GAME";
+        x = getXCenteredText(text);
+        y += gp.TileSize*3;
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 4, y + 4);
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+        if(commandNum == 0){
+            g2.setColor(Color.black);
+            g2.drawString(">", x - gp.TileSize + 4, y + 4);
+            g2.setColor(Color.white);
+            g2.drawString(">", x - gp.TileSize, y);
+        }
+
+        text = "LOAD GAME";
+        x = getXCenteredText(text);
+        y += gp.TileSize;
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 4, y + 4);
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+        if(commandNum == 1){
+            g2.setColor(Color.black);
+            g2.drawString(">", x - gp.TileSize + 4, y + 4);
+            g2.setColor(Color.white);
+            g2.drawString(">", x - gp.TileSize, y);
+        }
+
+        text = "QUIT";
+        x = getXCenteredText(text);
+        y += gp.TileSize;
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 4, y + 4);
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+        if(commandNum == 2){
+            g2.setColor(Color.black);
+            g2.drawString(">", x - gp.TileSize + 4, y + 4);
+            g2.setColor(Color.white);
+            g2.drawString(">", x - gp.TileSize, y);
+        }
+
+    }
+    public void drawPauseScreen(){
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
+        String txt = "PAUSED";
+        int x = getXCenteredText(txt);
+        int y = gp.ScreenHeight/2 + gp.TileSize/2;
+        g2.drawString(txt, x, y);
+    }
     public int getXCenteredText(String text){
         int length  = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return gp.ScreenWidth/2 - length/2;
     }
-
-
     public void drawDialogueScreen(){
 
         // WINDOW
@@ -81,7 +191,6 @@ public class UI {
             y += 40;
         }
     }
-
     public void drawDialogueWindow(int x, int y, int width, int height){
         Color c =  new Color(0,0,0, 210);
         g2.setColor(c);
@@ -90,5 +199,19 @@ public class UI {
         g2.setColor(c);
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
+    }
+
+    public BufferedImage SetUpImg(String imgPath){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage ScaledImg = null;
+
+        try{
+            ScaledImg = ImageIO.read(getClass().getResource(imgPath + ".png"));
+            ScaledImg = uTool.scaleImg(ScaledImg, gp.TileSize, gp.TileSize);
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return ScaledImg;
     }
 }

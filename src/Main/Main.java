@@ -8,7 +8,6 @@ public class Main{
         window.setResizable(false);
         window.setTitle("Adventure");
 
-
         Panel gamePanel = new Panel();
         window.add(gamePanel);
 

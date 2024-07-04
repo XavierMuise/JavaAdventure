@@ -53,7 +53,6 @@ public class KeyHandler implements KeyListener{
             }
         }
 
-
         // DIALOGUE STATE
 
         if(gp.gameState == gp.dialogueState){
@@ -61,6 +60,31 @@ public class KeyHandler implements KeyListener{
                 gp.npc[gp.player.NPC].speak();
             }
 
+        }
+
+        // TITLE SCREEN STATE
+
+        if(gp.gameState == gp.titleState){
+            if(code == KeyEvent.VK_ENTER){
+                // NEW GAME
+                if(gp.ui.commandNum == 0){
+                    gp.gameState = gp.playState;
+                }
+                // LOAD GAME
+                if(gp.ui.commandNum == 1){
+                    gp.gameState = gp.playState;
+                }
+                // EXIT
+                if(gp.ui.commandNum == 2){
+                    System.exit(0);
+                }
+            }
+            if(code == KeyEvent.VK_DOWN && gp.ui.commandNum < 2){
+               gp.ui.commandNum++;
+            }
+            if(code == KeyEvent.VK_UP && gp.ui.commandNum > 0){
+                gp.ui.commandNum--;
+            }
         }
     }
 

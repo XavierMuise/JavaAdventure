@@ -12,6 +12,9 @@ public class Player extends Entity {
     public final int screenY;
     public int NPC;
     boolean hasBoots = false;
+    public int maxHP = 6; // 2 HP for each heart
+    public int HP = 6;
+
     public Player(Panel gp, KeyHandler KH){
         super(gp);
 
@@ -30,8 +33,6 @@ public class Player extends Entity {
 
         setDefaultValues();
         getPlayerImage();
-
-
     }
 
     public void setDefaultValues(){
