@@ -3,7 +3,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Random;
 
-public class Rebecca extends Entity{
+public class Rebecca extends NPC    {
 
     public Rebecca(Panel gp){
         super(gp);

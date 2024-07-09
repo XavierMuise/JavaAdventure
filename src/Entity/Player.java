@@ -12,8 +12,7 @@ public class Player extends Entity {
     public final int screenY;
     public int NPC;
     boolean hasBoots = false;
-    public int maxHP = 6; // 2 HP for each heart
-    public int HP = 6;
+    public BufferedImage att_up_1, att_up_2, att_down_1, att_down_2, att_left_1, att_left_2, att_right_1, att_right_2;
 
     public Player(Panel gp, KeyHandler KH){
         super(gp);
@@ -23,6 +22,7 @@ public class Player extends Entity {
         screenX = gp.ScreenWidth/2 - gp.TileSize/2;
         screenY = gp.ScreenHeight/2 - gp.TileSize/2;
 
+        type = Entity.player;
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
@@ -31,6 +31,12 @@ public class Player extends Entity {
         solidArea.width = 24;
         solidArea.height = 24;
 
+
+        attackArea = new Rectangle(36,36);
+        NPC = 999;
+        this.damage = 1;
+        this.maxHP = 6;
+        this.HP = maxHP;
         setDefaultValues();
         getPlayerImage();
     }
@@ -44,30 +50,42 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage(){
-            up0 = SetUpImg("/Player/boy_up_0");
-            up1 = SetUpImg("/Player/boy_up_1");
-            up2 = SetUpImg("/Player/boy_up_2");
+            up0 = SetUpImg("/Player/boy_up_0", gp.TileSize, gp.TileSize);
+            up1 = SetUpImg("/Player/boy_up_1", gp.TileSize, gp.TileSize);
+            up2 = SetUpImg("/Player/boy_up_2", gp.TileSize, gp.TileSize);
 
-            down0 = SetUpImg("/Player/boy_down_0");
-            down1 = SetUpImg("/Player/boy_down_1");
-            down2 = SetUpImg("/Player/boy_down_2");
+            down0 = SetUpImg("/Player/boy_down_0", gp.TileSize, gp.TileSize);
+            down1 = SetUpImg("/Player/boy_down_1", gp.TileSize, gp.TileSize);
+            down2 = SetUpImg("/Player/boy_down_2", gp.TileSize, gp.TileSize);
 
-            left0 = SetUpImg("/Player/boy_left_0");
-            left1 = SetUpImg("/Player/boy_left_1");
-            left2 = SetUpImg("/Player/boy_left_2");
+            left0 = SetUpImg("/Player/boy_left_0", gp.TileSize, gp.TileSize);
+            left1 = SetUpImg("/Player/boy_left_1", gp.TileSize, gp.TileSize);
+            left2 = SetUpImg("/Player/boy_left_2", gp.TileSize, gp.TileSize);
 
-            right0 = SetUpImg("/Player/boy_right_0");
-            right1 = SetUpImg("/Player/boy_right_1");
-            right2 = SetUpImg("/Player/boy_right_2");
+            right0 = SetUpImg("/Player/boy_right_0", gp.TileSize, gp.TileSize);
+            right1 = SetUpImg("/Player/boy_right_1", gp.TileSize, gp.TileSize);
+            right2 = SetUpImg("/Player/boy_right_2", gp.TileSize, gp.TileSize);
 
+            // attack sprites
+            att_up_1 = SetUpImg("/Player/attack_up_1", gp.TileSize, gp.TileSize*2);
+            att_up_2 = SetUpImg("/Player/attack_up_2", gp.TileSize, gp.TileSize*2);
+
+            att_down_1 = SetUpImg("/Player/attack_down_1", gp.TileSize, gp.TileSize*2);
+            att_down_2 = SetUpImg("/Player/attack_down_2", gp.TileSize, gp.TileSize*2);
+
+            att_left_1 = SetUpImg("/Player/attack_left_1", gp.TileSize*2, gp.TileSize);
+            att_left_2 = SetUpImg("/Player/attack_left_2", gp.TileSize*2, gp.TileSize);
+
+            att_right_1 = SetUpImg("/Player/attack_right_1", gp.TileSize*2, gp.TileSize);
+            att_right_2 = SetUpImg("/Player/attack_right_2", gp.TileSize*2, gp.TileSize);
     }
-
 
 
     public void update(){
 
-        if(KH.upPressed || KH.downPressed || KH.leftPressed || KH.rightPressed){
-
+        if(attacking){
+            attack();
+        } else if(KH.upPressed || KH.downPressed || KH.leftPressed || KH.rightPressed || KH.interactPressed){
             if(KH.upPressed){
                 direction = "up";
             }
@@ -79,7 +97,7 @@ public class Player extends Entity {
             }
             if(KH.rightPressed){
                 direction = "right";
-            } 
+            }
             if(KH.upPressed && KH.leftPressed){
                 direction = "upLeft";
             }
@@ -105,7 +123,14 @@ public class Player extends Entity {
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
-            if(!collisionOn){
+            //CHECK ENEMY COLLISION
+            int enemyIndex = gp.cChecker.checkEntity(this, gp.mon);
+            contactEnemy(enemyIndex);
+
+            // CHECK EVENT
+            gp.EH.checkEvent();
+
+            if(!collisionOn && !KH.interactPressed){
                 switch(direction){
                     case "up":
                         worldY -= speed;
@@ -136,8 +161,8 @@ public class Player extends Entity {
                         worldY += speed;
                         break;
                 }
-
             }
+            gp.KH.interactPressed = false;
 
             spriteCounter++;
 
@@ -161,6 +186,14 @@ public class Player extends Entity {
             spriteNum = 0;
         }
 
+        if(invincible){
+            iframeCounter++;
+            if(iframeCounter > 60){
+                iframeCounter = 0;
+                invincible = false;
+            }
+        }
+
         //Sprinting
         if(KH.shiftPressed && hasBoots){
             if(direction.equals("upLeft") || direction.equals("upRight") || direction.equals("downLeft") ||
@@ -180,6 +213,60 @@ public class Player extends Entity {
 
     }
 
+    public void attack(){
+
+        spriteCounter++;
+
+        if(spriteCounter <= 5){
+            spriteNum = 1;
+        } else if(spriteCounter <= 25){
+            spriteNum = 2;
+
+            // store current info
+            int worldx = worldX;
+            int worldy = worldY;
+            int solidAreaW = solidArea.width;
+            int solidAreaH = solidArea.height;
+
+            switch(direction){
+                case "up": worldY -= attackArea.height; break;
+                case "down": worldY += attackArea.height; break;
+                case "left": worldX -= attackArea.width; break;
+                case "right": worldX += attackArea.width; break;
+            }
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            int monIndex = gp.cChecker.checkEntity(this, gp.mon);
+            damageEnemy(monIndex);
+
+
+            worldX = worldx;
+            worldY = worldy;
+            solidArea.width = solidAreaW;
+            solidArea.height = solidAreaH;
+
+        } else{
+            spriteNum = 0;
+            spriteCounter = 0;
+            attacking = false;
+        }
+
+    }
+
+    public void damageEnemy(int i){
+        if(i != 999) {
+            if(!gp.mon[i].invincible) {
+                gp.mon[i].HP -= damage;
+                gp.mon[i].invincible = true;
+                if(gp.mon[i].HP <= 0){
+                    gp.mon[i].dying = true;
+                }
+            }
+        }
+
+    }
+
     public void pickUpObject(int i){
         if(i != 999){
 
@@ -189,7 +276,6 @@ public class Player extends Entity {
     public void interactNPC(int i){
 
         if(i != 999){
-
             if(gp.KH.interactPressed) {
                 NPC = i;
                 gp.gameState = gp.dialogueState;
@@ -200,57 +286,129 @@ public class Player extends Entity {
 
     }
 
+    public void contactEnemy(int i){
+        if(i != 999){
+            if(!invincible) {
+                gp.mon[i].contactPlayer();
+            } else {
+                iframeCounter++;
+            }
+        }
+    }
+
+
+
     public void draw(Graphics2D g2, int TileSize){
         
         BufferedImage img = null;
+        int tempScreenX = screenX;
+        int tempScreenY = screenY;
 
         switch(direction){
             case "up":
-                if(spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
-                    img = up0;
-                }
-                if(spriteNum == 1) {
-                    img = up1;
-                }
-                if(spriteNum == 3) {
-                    img = up2;
+                if(!attacking) {
+                    if (spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
+                        img = up0;
+                    }
+                    if (spriteNum == 1) {
+                        img = up1;
+                    }
+                    if (spriteNum == 3) {
+                        img = up2;
+                    }
+                } else {
+                    tempScreenY = screenY - gp.TileSize;
+                    if (spriteNum == 0){
+                        img = up0;
+                    }
+                    if (spriteNum == 1){
+                        img = att_up_1;
+                    }
+                    if(spriteNum == 2){
+                        img = att_up_2;
+                    }
+
                 }
                 break;
             case "down":
-                if(spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
-                    img = down0;
-                }
-                if(spriteNum == 1) {
-                    img = down1;
-                }
-                if(spriteNum == 3) {
-                    img = down2;
+                if(!attacking) {
+                    if (spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
+                        img = down0;
+                    }
+                    if (spriteNum == 1) {
+                        img = down1;
+                    }
+                    if (spriteNum == 3) {
+                        img = down2;
+                    }
+                } else {
+                    if (spriteNum == 0){
+                        img = down0;
+                    }
+                    if (spriteNum == 1){
+                        img = att_down_1;
+                    }
+                    if(spriteNum == 2){
+                        img = att_down_2;
+                    }
+
                 }
                 break;
             case "left", "upLeft", "downLeft":
-                if(spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
-                    img = left0;
-                }
-                if(spriteNum == 1) {
-                    img = left1;
-                }
-                if(spriteNum == 3) {
-                    img = left2;
+                if(!attacking) {
+                    if (spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
+                        img = left0;
+                    }
+                    if (spriteNum == 1) {
+                        img = left1;
+                    }
+                    if (spriteNum == 3) {
+                        img = left2;
+                    }
+                } else {
+                    tempScreenX = screenX - gp.TileSize;
+                    if (spriteNum == 0){
+                        img = left0;
+                    }
+                    if (spriteNum == 1){
+                        img = att_left_1;
+                    }
+                    if(spriteNum == 2){
+                        img = att_left_2;
+                    }
+
                 }
                 break;
             case "right", "upRight", "downRight":
-                if(spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
-                    img = right0;
-                }
-                if(spriteNum == 1) {
-                    img = right1;
-                }
-                if(spriteNum == 3) {
-                    img = right2;
+                if(!attacking) {
+                    if (spriteNum == 0 || spriteNum == 2 || spriteNum == 4) {
+                        img = right0;
+                    }
+                    if (spriteNum == 1) {
+                        img = right1;
+                    }
+                    if (spriteNum == 3) {
+                        img = right2;
+                    }
+                } else {
+                    if (spriteNum == 0){
+                        img = right0;
+                    }
+                    if (spriteNum == 1){
+                        img = att_right_1;
+                    }
+                    if(spriteNum == 2){
+                        img = att_right_2;
+                    }
+
                 }
                 break;
         }
 
-        g2.drawImage(img, screenX, screenY,null);
+        if(invincible){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+        g2.drawImage(img, tempScreenX, tempScreenY,null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 }

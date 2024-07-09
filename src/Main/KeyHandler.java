@@ -5,7 +5,7 @@ public class KeyHandler implements KeyListener{
 
     public Panel gp;
 
-    public boolean upPressed, leftPressed, rightPressed, downPressed, shiftPressed, interactPressed;
+    public boolean upPressed, leftPressed, rightPressed, downPressed, shiftPressed, interactPressed, attackPressed;
     public boolean debugMode;
 
 
@@ -44,6 +44,9 @@ public class KeyHandler implements KeyListener{
             if (code == KeyEvent.VK_E) {
                 interactPressed = true;
             }
+            if(code == KeyEvent.VK_Q){
+                gp.player.attacking = true;
+            }
             if (code == KeyEvent.VK_ESCAPE) {
                 if(gp.gameState == gp.playState) {
                     gp.gameState = gp.pauseState;
@@ -56,8 +59,11 @@ public class KeyHandler implements KeyListener{
         // DIALOGUE STATE
 
         if(gp.gameState == gp.dialogueState){
-            if(code == KeyEvent.VK_E){
+            if(code == KeyEvent.VK_E && gp.player.NPC != 999){
                 gp.npc[gp.player.NPC].speak();
+            }
+            if(code == KeyEvent.VK_E && gp.player.NPC == 999){
+                gp.gameState = gp.playState;
             }
 
         }
@@ -106,6 +112,9 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_D){
             rightPressed = false;
+        }
+        if(code == KeyEvent.VK_E){
+            interactPressed = false;
         }
         if(code == KeyEvent.VK_SHIFT ){
             shiftPressed = false;

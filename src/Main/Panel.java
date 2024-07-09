@@ -35,6 +35,7 @@ public class Panel extends JPanel implements Runnable{
     CollisionChecker cChecker = new CollisionChecker(this);
     assetSetter aSetter = new assetSetter(this);
     UI ui = new UI(this);
+    public EventHandler EH = new EventHandler(this);
 
     // GAME STATE
     public int gameState;
@@ -47,7 +48,8 @@ public class Panel extends JPanel implements Runnable{
     // ENTITY AND OBJECT
     Player player = new Player(this, KH);
     public superObject[] obj = new superObject[10];
-    public Entity[] npc = new Entity[10];
+    public NPC[] npc = new NPC[10];
+    public Enemy[] mon = new Enemy[10];
 
     public Panel(){
         this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
@@ -60,6 +62,7 @@ public class Panel extends JPanel implements Runnable{
     public void setUpGame(){
         aSetter.setObject();
         aSetter.setNPC();
+        aSetter.setMON();
         playMusic(0);
         gameState = titleState;
     }
@@ -111,9 +114,19 @@ public class Panel extends JPanel implements Runnable{
             player.update();
 
             //NPC
-            for(Entity e : npc){
+            for(NPC e : npc){
                 if(e != null) {
                     e.update();
+                }
+            }
+            for(int i = 0; i < mon.length; i++){
+                if(mon[i] != null) {
+                    if(mon[i].alive && !mon[i].dying) {
+                        mon[i].update();
+                    } else if(!mon[i].alive) {
+                        mon[i] = null;
+                    }
+
                 }
             }
         } else if (gameState == pauseState) {
@@ -140,15 +153,21 @@ public class Panel extends JPanel implements Runnable{
             tileM.draw(g2);
 
             //Objects
-            for (int i = 0; i < obj.length; i++) {
-                if (obj[i] != null) {
-                    obj[i].draw(g2, this);
+            for (superObject superObject : obj) {
+                if (superObject != null) {
+                    superObject.draw(g2, this);
                 }
             }
             // NPC
-            for (int i = 0; i < npc.length; i++) {
-                if (npc[i] != null) {
-                    npc[i].draw(g2);
+            for(NPC entity : npc) {
+                if (entity != null) {
+                    entity.draw(g2);
+                }
+            }
+            // Enemies
+            for(Enemy entity : mon){
+                if(entity != null) {
+                    entity.draw(g2);
                 }
             }
 

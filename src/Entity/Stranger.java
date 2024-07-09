@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Stranger extends Entity {
+public class Stranger extends NPC {
     
     public Stranger(Panel gp){
         super(gp);

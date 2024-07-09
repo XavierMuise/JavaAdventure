@@ -8,22 +8,35 @@ public class Entity{
 
     public Panel gp;
     public int worldX,worldY; // coordinates
-    public int speed;
-
-    public BufferedImage up0, up1, up2, down0, down1, down2, left0, left1, left2, right0, right1, right2;
-    public String direction;
-
-    public int spriteCounter = 0;
-    public int spriteNum = 1;
-
     public Rectangle solidArea = new Rectangle(0,0 , 48, 48);
+    public Rectangle attackArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
+    public BufferedImage up0, up1, up2, down0, down1, down2, left0, left1, left2, right0, right1, right2;
+    public int type;
+    public static final int player = 0;
+    public static final int NPC = 1;
+    public static final int enemy = 2;
+
+    // STATE
+    public String direction;
+    public boolean invincible;
     public boolean collisionOn = false;
+    public int spriteNum = 1;
+    public boolean attacking = false;
+    boolean alive = true;
+    boolean dying = false;
 
+    // COUNTERS
     public int actionCounter = 0;
-    public String[] dialogues;
-    int dialogueIndex = 0;
+    public int iframeCounter = 0;
+    public int spriteCounter = 0;
+    public int dyingCounter = 0;
 
+    // ATTRIBUTES
+    int damage;
+    public int maxHP; // 2 HP for each heart
+    public int HP;
+    public int speed;
 
     public Entity(Panel gp){
         this.gp = gp;
@@ -33,29 +46,6 @@ public class Entity{
 
     }
 
-    public void speak(){
-        if(dialogues[dialogueIndex] == null){
-            gp.gameState = gp.playState;
-            dialogueIndex = 0;
-        }
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
-        dialogueIndex++;
-
-        switch(gp.player.direction){
-            case "up":
-                direction = "down";
-                break;
-            case "down":
-                direction = "up";
-                break;
-            case "left":
-                direction = "right";
-                break;
-            case "right":
-                direction = "left";
-                break;
-        }
-    }
 
     public void update() {
         SetAction();
@@ -63,7 +53,6 @@ public class Entity{
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
         gp.cChecker.checkPlayer(this);
-
 
         if (!collisionOn) {
             switch (direction) {
@@ -100,6 +89,20 @@ public class Entity{
     }
 
 
+    public BufferedImage SetUpImg(String imgPath, int width, int height){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage ScaledImg = null;
+
+        try{
+            ScaledImg = ImageIO.read(getClass().getResource(imgPath + ".png"));
+            ScaledImg = uTool.scaleImg(ScaledImg, width, height);
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return ScaledImg;
+    }
+
     public BufferedImage SetUpImg(String imgPath){
         UtilityTool uTool = new UtilityTool();
         BufferedImage ScaledImg = null;
@@ -112,6 +115,34 @@ public class Entity{
             e.printStackTrace();
         }
         return ScaledImg;
+    }
+
+    public void dyingAnimation(Graphics2D g2){
+
+        dyingCounter++;
+
+        if(dyingCounter <= 5){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0f));
+        } else if(dyingCounter <= 10){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        } else if(dyingCounter <= 20){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0f));
+        } else if(dyingCounter <= 30){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        } else if(dyingCounter <= 40){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0f));
+        } else if(dyingCounter <= 50){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        } else if(dyingCounter <= 60){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0f));
+        }
+
+        if(dyingCounter > 60){
+            alive = false;
+            dying = false;
+            
+        }
+
     }
 
     public void draw(Graphics2D g2){
@@ -172,7 +203,16 @@ public class Entity{
                     break;
             }
 
+            if(invincible){
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+            }
+
+            if(dying){
+                dyingAnimation(g2);
+            }
+
             g2.drawImage(img, screenX, screenY, gp.TileSize, gp.TileSize, null);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         }
     }
