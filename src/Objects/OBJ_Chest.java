@@ -3,9 +3,10 @@ import java.io.IOException;
 
 public class OBJ_Chest extends superObject{
     public OBJ_Chest(Panel gp) {
+        super(gp);
         name = "Chest";
         Opened = false;
-        this.gp = gp;
+
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/chestClosed.png"));

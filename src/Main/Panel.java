@@ -43,6 +43,7 @@ public class Panel extends JPanel implements Runnable{
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
+    public final int statsState = 4;
 
 
     // ENTITY AND OBJECT
@@ -50,6 +51,7 @@ public class Panel extends JPanel implements Runnable{
     public superObject[] obj = new superObject[10];
     public NPC[] npc = new NPC[10];
     public Enemy[] mon = new Enemy[10];
+    public MirrorChunk[] chunks = new MirrorChunk[10];
 
     public Panel(){
         this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
@@ -63,6 +65,7 @@ public class Panel extends JPanel implements Runnable{
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMON();
+        aSetter.setChunks();
         playMusic(0);
         gameState = titleState;
     }
@@ -119,6 +122,7 @@ public class Panel extends JPanel implements Runnable{
                     e.update();
                 }
             }
+            // ENEMIES
             for(int i = 0; i < mon.length; i++){
                 if(mon[i] != null) {
                     if(mon[i].alive && !mon[i].dying) {
@@ -127,6 +131,13 @@ public class Panel extends JPanel implements Runnable{
                         mon[i] = null;
                     }
 
+                }
+            }
+
+            // chunks
+            for (MirrorChunk chunk : chunks) {
+                if (chunk != null) {
+                    chunk.update();
                 }
             }
         } else if (gameState == pauseState) {
@@ -168,6 +179,12 @@ public class Panel extends JPanel implements Runnable{
             for(Enemy entity : mon){
                 if(entity != null) {
                     entity.draw(g2);
+                }
+            }
+            //chunks
+            for(MirrorChunk chunk : chunks){
+                if(chunk != null){
+                    chunk.draw(g2);
                 }
             }
 

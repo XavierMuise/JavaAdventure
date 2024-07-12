@@ -4,7 +4,7 @@ import java.io.IOException;
 public class OBJ_Door extends superObject{
 
     public OBJ_Door(Panel gp) {
-        this.gp = gp;
+        super(gp);
         name = "Door";
         Opened = false;
         try{

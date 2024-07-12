@@ -17,7 +17,7 @@ public class UI {
     BufferedImage FullHeart, HalfHeart, EmptyHeart;
 
     public String currentDialogue = "";
-
+    public int attributeNum = 0;
     public int commandNum = 0 ;
 
 
@@ -59,6 +59,9 @@ public class UI {
             drawHealthBar();
         } else if(gp.gameState == gp.dialogueState){
             drawDialogueScreen();
+            drawHealthBar();
+        } else if(gp.gameState == gp.statsState){
+            drawUpgradeScreen();
             drawHealthBar();
         }
     }
@@ -102,8 +105,8 @@ public class UI {
         g2.setColor(Color.blue);
         g2.fillRect(0,0, gp.ScreenWidth, gp.ScreenHeight);
         // TITLE NAME
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
-        String text = "Placeholder Name"; // cant think of a title
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 90F));
+        String text = "Shards of Red Mirror"; // cant think of a title
         int x = getXCenteredText(text);
         int y = gp.TileSize * 3;
         // TITLE SHADOW
@@ -200,7 +203,80 @@ public class UI {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
     }
+    public void drawUpgradeScreen(){
+        final int frameX = gp.TileSize*2;
+        final int frameY = gp.TileSize;
+        final int frameWidth = gp.TileSize*5;
+        final int frameHeight= gp.TileSize*10;
+        drawDialogueWindow(frameX, frameY, frameWidth, frameHeight);
 
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+        g2.setColor(Color.white);
+
+        int textX = frameX + 20;
+        int textY = frameY + gp.TileSize;
+        final int lineHeight = 32;
+        int tailX = (frameX + frameWidth) - 30;
+
+        g2.drawString("Level", textX, textY);
+        g2.drawString("" + gp.player.level, tailX, textY);
+        textY += lineHeight;
+        g2.drawString("Shards Held" , textX, textY);
+        g2.drawString("" + gp.player.shards, tailX, textY);
+        textY += lineHeight;
+        g2.drawString("Shards Needed" , textX, textY);
+        g2.drawString("" + gp.player.nextLevelShards, tailX, textY);
+        textY += lineHeight;
+        g2.drawString("--------------------", textX, textY);
+
+        // ATTRIBUTES
+        textY += lineHeight;
+        g2.drawString("Attributes" , textX, textY);
+        textY += lineHeight;
+
+        g2.drawString("Vigor" , textX, textY);
+        g2.drawString("" + gp.player.vigor, tailX, textY);
+        if(attributeNum == 0){
+            g2.setColor(Color.white);
+            g2.drawString(">",textX - 32 , textY );
+        }
+        textY += lineHeight;
+
+        g2.drawString("Strength", textX, textY);
+        g2.drawString("" + gp.player.strength, tailX, textY);
+        if(attributeNum == 1){
+            g2.setColor(Color.white);
+            g2.drawString(">",textX - 32 , textY );
+        }
+        textY += lineHeight;
+
+        g2.drawString("Defence", textX, textY);
+        g2.drawString("" + gp.player.defense, tailX, textY);
+        if(attributeNum == 2){
+            g2.setColor(Color.white);
+            g2.drawString(">",textX - 32 , textY );
+        }
+        textY += lineHeight;
+        g2.drawString("--------------------", textX, textY);
+
+        // STATS
+        textY += lineHeight;
+        g2.drawString("Stats" , textX, textY);
+        textY += lineHeight;
+        g2.drawString("HP" , textX, textY);
+        g2.drawString("" + gp.player.maxHP, tailX, textY);
+        textY += lineHeight;
+        g2.drawString("Damage" , textX, textY);
+        g2.drawString("" + gp.player.damage, tailX, textY);
+        textY += lineHeight;
+        g2.drawString("Speed", textX, textY);
+        g2.drawString("" + gp.player.speed, tailX, textY);
+        textY += lineHeight;
+        g2.drawString("Resistance" , textX, textY);
+        g2.drawString("" + gp.player.resistance, tailX, textY);
+
+
+    }
     public BufferedImage SetUpImg(String imgPath){
         UtilityTool uTool = new UtilityTool();
         BufferedImage ScaledImg = null;

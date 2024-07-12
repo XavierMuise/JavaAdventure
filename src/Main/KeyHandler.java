@@ -92,6 +92,40 @@ public class KeyHandler implements KeyListener{
                 gp.ui.commandNum--;
             }
         }
+
+
+        // UPGRADE SCREEN STATE
+        if(gp.gameState == gp.statsState){
+
+            if(code == KeyEvent.VK_ESCAPE){
+                gp.ui.attributeNum = 0;
+                gp.gameState = gp.playState;
+            }
+            if(code == KeyEvent.VK_ENTER){
+                // Vigor
+                if(gp.ui.attributeNum == 0){
+                    gp.player.levelUp("vigor");
+                }
+                // Strength
+                if(gp.ui.attributeNum == 1){
+                    gp.player.levelUp("strength");
+                }
+                // Defense
+                if(gp.ui.attributeNum == 2){
+                    gp.player.levelUp("defense");
+                }
+            }
+
+            if(code == KeyEvent.VK_DOWN && gp.ui.attributeNum < 2){
+                gp.ui.attributeNum++;
+            }
+            if(code == KeyEvent.VK_UP && gp.ui.attributeNum > 0){
+                gp.ui.attributeNum--;
+            }
+
+
+
+        }
     }
 
     public void keyReleased(KeyEvent e) {

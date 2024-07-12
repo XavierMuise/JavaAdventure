@@ -1,5 +1,6 @@
 public class Enemy extends Entity{
 
+    public int shardsDropped;
     public Enemy(Panel gp) {
         super(gp);
         type = Entity.enemy;
@@ -7,7 +8,7 @@ public class Enemy extends Entity{
 
     public void contactPlayer(){
         if(!gp.player.invincible) {
-            gp.player.HP -= damage;
+            gp.player.HP -= damage + gp.player.resistance;
             gp.player.invincible = true;
         }
     }

@@ -4,8 +4,9 @@ public class MON_Slime extends Enemy{
     public MON_Slime(Panel gp, int x, int y) {
         super(gp);
         speed = 1;
-        HP = 3;
+        HP = 6;
         damage = 1;
+        shardsDropped = 1;
         direction = "down";
         collisionOn = false;
         worldX = x;
@@ -61,7 +62,8 @@ public class MON_Slime extends Enemy{
     }
 
     public void damageReaction(){
-        
+        actionCounter = 0;
+        direction = gp.player.direction;
     }
 
 }

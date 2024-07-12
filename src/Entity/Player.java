@@ -14,6 +14,15 @@ public class Player extends Entity {
     boolean hasBoots = false;
     public BufferedImage att_up_1, att_up_2, att_down_1, att_down_2, att_left_1, att_left_2, att_right_1, att_right_2;
 
+    // ATTRIBUTES
+    public int level;
+    public int vigor;
+    public int strength;
+    public int defense;
+    public int shards;
+    public int nextLevelShards;
+    public superSword currentWeapon;
+
     public Player(Panel gp, KeyHandler KH){
         super(gp);
 
@@ -30,24 +39,42 @@ public class Player extends Entity {
         solidAreaDefaultY = solidArea.y;
         solidArea.width = 24;
         solidArea.height = 24;
-
-
         attackArea = new Rectangle(36,36);
-        NPC = 999;
-        this.damage = 1;
-        this.maxHP = 6;
-        this.HP = maxHP;
+
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues(){
         worldX = gp.TileSize * 23;
-        worldY = gp.TileSize * 21;
-        speed = 4;
+        worldY = gp.TileSize * 22;
         direction = "down";
-        
+        NPC = 999;
+
+        level = 1;
+        vigor = 1;
+        strength = 1;
+        defense = 0;
+
+        shards = 100;
+        nextLevelShards = 3 * level;
+
+        maxHP = vigor * 2;
+        HP = maxHP;
+        speed = 4;
+        resistance = defense / 3;
+        currentWeapon = new SWORD_broken(gp);
+        damage = strength * currentWeapon.attackScale;
     }
+
+    public void updateStats(){
+        this.damage = strength * currentWeapon.attackScale;
+        this.maxHP = vigor * 2;
+        this.HP = maxHP;
+        this.resistance = defense / 3;
+
+    }
+
 
     public void getPlayerImage(){
             up0 = SetUpImg("/Player/boy_up_0", gp.TileSize, gp.TileSize);
@@ -126,6 +153,11 @@ public class Player extends Entity {
             //CHECK ENEMY COLLISION
             int enemyIndex = gp.cChecker.checkEntity(this, gp.mon);
             contactEnemy(enemyIndex);
+
+            //CHECK CHUNK COLLISION
+            int chunkIndex = gp.cChecker.checkEntity(this, gp.chunks);
+            restAtChunk(chunkIndex);
+
 
             // CHECK EVENT
             gp.EH.checkEvent();
@@ -259,8 +291,10 @@ public class Player extends Entity {
             if(!gp.mon[i].invincible) {
                 gp.mon[i].HP -= damage;
                 gp.mon[i].invincible = true;
+                gp.mon[i].damageReaction();
                 if(gp.mon[i].HP <= 0){
                     gp.mon[i].dying = true;
+                    shards += gp.mon[i].shardsDropped;
                 }
             }
         }
@@ -283,7 +317,6 @@ public class Player extends Entity {
             }
         }
         gp.KH.interactPressed = false;
-
     }
 
     public void contactEnemy(int i){
@@ -296,6 +329,38 @@ public class Player extends Entity {
         }
     }
 
+    public void restAtChunk(int i){
+        if(i != 999){
+            gp.chunks[i].rest();
+        }
+    }
+
+    public void levelUp(String Attribute){
+        if(shards >= nextLevelShards){
+            switch(Attribute){
+                case "vigor":
+                    if(vigor <= 20) {
+                        vigor++;
+                    }
+                    break;
+                case "strength":
+                    if(strength <= 20) {
+                        strength++;
+                    }
+                    break;
+                case "defense":
+                    if(defense <= 20) {
+                        defense++;
+                    }
+                    break;
+            }
+            updateStats();
+            shards -= nextLevelShards;
+            level++;
+            nextLevelShards = level * 3;
+
+        }
+    }
 
 
     public void draw(Graphics2D g2, int TileSize){

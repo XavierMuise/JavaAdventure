@@ -4,7 +4,7 @@ import java.io.IOException;
 public class OBJ_hole extends superObject{
 
     public OBJ_hole(Panel gp){
-        this.gp = gp;
+        super(gp);
         name = "hole";
 
         try{

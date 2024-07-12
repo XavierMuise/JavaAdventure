@@ -3,8 +3,8 @@ import java.io.IOException;
 
 public class OBJ_Boots extends superObject{
     public OBJ_Boots(Panel gp) {
+        super(gp);
         name = "Boots";
-        this.gp = gp;
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/Boots.png"));

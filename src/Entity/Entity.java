@@ -37,6 +37,7 @@ public class Entity{
     public int maxHP; // 2 HP for each heart
     public int HP;
     public int speed;
+    public int resistance;
 
     public Entity(Panel gp){
         this.gp = gp;

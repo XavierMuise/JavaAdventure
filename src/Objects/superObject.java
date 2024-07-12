@@ -1,5 +1,7 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class superObject {
     public BufferedImage img;
@@ -11,6 +13,10 @@ public class superObject {
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
     Panel gp;
+
+    public superObject(Panel gp){
+        this.gp = gp;
+    }
 
     public boolean Opened;
 
@@ -26,6 +32,34 @@ public class superObject {
             g2.drawImage(img, screenX, screenY, gp.TileSize, gp.TileSize, null);
 
         }
+    }
+
+    public BufferedImage SetUpImg(String imgPath, int width, int height){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage ScaledImg = null;
+
+        try{
+            ScaledImg = ImageIO.read(getClass().getResource(imgPath + ".png"));
+            ScaledImg = uTool.scaleImg(ScaledImg, width, height);
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return ScaledImg;
+    }
+
+    public BufferedImage SetUpImg(String imgPath){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage ScaledImg = null;
+
+        try{
+            ScaledImg = ImageIO.read(getClass().getResource(imgPath + ".png"));
+            ScaledImg = uTool.scaleImg(ScaledImg, gp.TileSize, gp.TileSize);
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return ScaledImg;
     }
 
 }
