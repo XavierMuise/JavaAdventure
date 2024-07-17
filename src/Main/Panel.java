@@ -44,6 +44,7 @@ public class Panel extends JPanel implements Runnable{
     public final int pauseState = 2;
     public final int dialogueState = 3;
     public final int statsState = 4;
+    public final int inventoryState = 5;
 
 
     // ENTITY AND OBJECT
@@ -202,6 +203,7 @@ public class Panel extends JPanel implements Runnable{
 
         if (KH.debugMode) {
             System.out.println(time);
+            System.out.println("X : " + (player.worldX/TileSize) + ", Y: " + (player.worldY/TileSize));
         }
 
         g2.dispose();

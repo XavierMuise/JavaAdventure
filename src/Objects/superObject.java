@@ -13,12 +13,15 @@ public class superObject {
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
     Panel gp;
+    public boolean Opened;
+    public String description = "";
+    public int attackScale = -1;
 
     public superObject(Panel gp){
         this.gp = gp;
     }
 
-    public boolean Opened;
+
 
     public void draw(Graphics2D g2, Panel gp){
 

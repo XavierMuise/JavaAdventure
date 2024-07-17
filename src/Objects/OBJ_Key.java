@@ -5,7 +5,8 @@ public class OBJ_Key extends superObject{
 
     public OBJ_Key(Panel gp) {
         super(gp);
-        name = "Key";
+        name = "[Key]";
+        description = "Might be able to \nunlock a chest or \ndoor";
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/Key.png"));

@@ -47,6 +47,9 @@ public class KeyHandler implements KeyListener{
             if(code == KeyEvent.VK_Q){
                 gp.player.attacking = true;
             }
+            if(code == KeyEvent.VK_I){
+                gp.gameState = gp.inventoryState;
+            }
             if (code == KeyEvent.VK_ESCAPE) {
                 if(gp.gameState == gp.playState) {
                     gp.gameState = gp.pauseState;
@@ -123,7 +126,27 @@ public class KeyHandler implements KeyListener{
                 gp.ui.attributeNum--;
             }
 
+        }
 
+        // INVENTORY SCREEN STATE
+
+        if(gp.gameState == gp.inventoryState){
+            if(code == KeyEvent.VK_ESCAPE){
+                gp.gameState = gp.playState;
+            }
+
+            if(code == KeyEvent.VK_DOWN && gp.ui.slotRow < 3){
+                gp.ui.slotRow++;
+            }
+            if(code == KeyEvent.VK_UP && gp.ui.slotRow > 0){
+                gp.ui.slotRow--;
+            }
+            if(code == KeyEvent.VK_LEFT && gp.ui.slotCol > 0){
+                gp.ui.slotCol--;
+            }
+            if(code == KeyEvent.VK_RIGHT && gp.ui.slotCol < 4){
+                gp.ui.slotCol++;
+            }
 
         }
     }

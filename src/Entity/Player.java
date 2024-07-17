@@ -13,6 +13,7 @@ public class Player extends Entity {
     public int NPC;
     boolean hasBoots = false;
     public BufferedImage att_up_1, att_up_2, att_down_1, att_down_2, att_left_1, att_left_2, att_right_1, att_right_2;
+    public superObject[][] Inventory;
 
     // ATTRIBUTES
     public int level;
@@ -21,7 +22,7 @@ public class Player extends Entity {
     public int defense;
     public int shards;
     public int nextLevelShards;
-    public superSword currentWeapon;
+    public superObject currentWeapon;
 
     public Player(Panel gp, KeyHandler KH){
         super(gp);
@@ -32,6 +33,7 @@ public class Player extends Entity {
         screenY = gp.ScreenHeight/2 - gp.TileSize/2;
 
         type = Entity.player;
+        Inventory = new superObject[4][5];
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
@@ -56,7 +58,7 @@ public class Player extends Entity {
         strength = 1;
         defense = 0;
 
-        shards = 100;
+        shards = 1000;
         nextLevelShards = 3 * level;
 
         maxHP = vigor * 2;
@@ -65,6 +67,23 @@ public class Player extends Entity {
         resistance = defense / 3;
         currentWeapon = new SWORD_broken(gp);
         damage = strength * currentWeapon.attackScale;
+        addItem(new OBJ_Key(gp));
+        addItem(currentWeapon);
+
+
+    }
+
+    public void addItem(superObject item){
+        // add item to first available inventory slot
+        for(int i = 0; i < Inventory.length; i++){
+            for(int j = 0; j < Inventory[i].length; j++){
+                if(Inventory[i][j] == null){
+                    Inventory[i][j] = item;
+                    return;
+                }
+            }
+        }
+
     }
 
     public void updateStats(){
@@ -339,26 +358,33 @@ public class Player extends Entity {
         if(shards >= nextLevelShards){
             switch(Attribute){
                 case "vigor":
-                    if(vigor <= 20) {
+                    if(vigor < 20) {
                         vigor++;
+                        updateStats();
+                        shards -= nextLevelShards;
+                        level++;
+                        nextLevelShards = level * 3;
                     }
                     break;
                 case "strength":
-                    if(strength <= 20) {
+                    if(strength < 20) {
                         strength++;
+                        updateStats();
+                        shards -= nextLevelShards;
+                        level++;
+                        nextLevelShards = level * 3;
                     }
                     break;
                 case "defense":
-                    if(defense <= 20) {
+                    if(defense < 20) {
                         defense++;
+                        updateStats();
+                        shards -= nextLevelShards;
+                        level++;
+                        nextLevelShards = level * 3;
                     }
                     break;
             }
-            updateStats();
-            shards -= nextLevelShards;
-            level++;
-            nextLevelShards = level * 3;
-
         }
     }
 

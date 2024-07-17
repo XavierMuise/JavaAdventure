@@ -20,6 +20,9 @@ public class UI {
     public int attributeNum = 0;
     public int commandNum = 0 ;
 
+    public int slotCol = 0;
+    public int slotRow = 0;
+
 
 
     public UI(Panel gp){
@@ -63,6 +66,9 @@ public class UI {
         } else if(gp.gameState == gp.statsState){
             drawUpgradeScreen();
             drawHealthBar();
+        } else if(gp.gameState == gp.inventoryState){
+            drawInventoryScreen();
+            drawHealthBar();
         }
     }
     public void drawHealthBar(){
@@ -98,8 +104,15 @@ public class UI {
             x += gp.TileSize - gp.TileSize/4;
         }
 
-    }
+        // DRAW SHARD COUNT
+        g2.drawImage(gp.chunks[0].down0, gp.TileSize * 14,0, gp.TileSize - gp.TileSize/4, gp.TileSize - gp.TileSize/4, null);
 
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+        g2.setColor(Color.white);
+        g2.drawString("" + gp.player.shards, gp.TileSize * 14 + gp.TileSize/2 + 10, gp.TileSize - gp.TileSize/4 - 5);
+
+
+    }
     public void drawTitleScreen(){
         // TITLE BACKGROUND
         g2.setColor(Color.blue);
@@ -205,8 +218,8 @@ public class UI {
     }
     public void drawUpgradeScreen(){
         final int frameX = gp.TileSize*2;
-        final int frameY = gp.TileSize;
-        final int frameWidth = gp.TileSize*5;
+        final int frameY = gp.TileSize*2;
+        final int frameWidth = gp.TileSize*6;
         final int frameHeight= gp.TileSize*10;
         drawDialogueWindow(frameX, frameY, frameWidth, frameHeight);
 
@@ -216,7 +229,7 @@ public class UI {
         int textX = frameX + 20;
         int textY = frameY + gp.TileSize;
         final int lineHeight = 32;
-        int tailX = (frameX + frameWidth) - 30;
+        int tailX = (frameX + frameWidth) - 60;
 
         g2.drawString("Level", textX, textY);
         g2.drawString("" + gp.player.level, tailX, textY);
@@ -236,7 +249,7 @@ public class UI {
 
         g2.drawString("Vigor" , textX, textY);
         g2.drawString("" + gp.player.vigor, tailX, textY);
-        if(attributeNum == 0){
+        if(attributeNum == 0 && gp.gameState == gp.statsState){
             g2.setColor(Color.white);
             g2.drawString(">",textX - 32 , textY );
         }
@@ -244,7 +257,7 @@ public class UI {
 
         g2.drawString("Strength", textX, textY);
         g2.drawString("" + gp.player.strength, tailX, textY);
-        if(attributeNum == 1){
+        if(attributeNum == 1 && gp.gameState == gp.statsState){
             g2.setColor(Color.white);
             g2.drawString(">",textX - 32 , textY );
         }
@@ -252,7 +265,7 @@ public class UI {
 
         g2.drawString("Defence", textX, textY);
         g2.drawString("" + gp.player.defense, tailX, textY);
-        if(attributeNum == 2){
+        if(attributeNum == 2 && gp.gameState == gp.statsState){
             g2.setColor(Color.white);
             g2.drawString(">",textX - 32 , textY );
         }
@@ -274,6 +287,67 @@ public class UI {
         textY += lineHeight;
         g2.drawString("Resistance" , textX, textY);
         g2.drawString("" + gp.player.resistance, tailX, textY);
+
+
+    }
+    public void drawInventoryScreen(){
+        final int frameX = gp.TileSize*9;
+        final int frameY = gp.TileSize*2;
+        final int frameWidth = gp.TileSize*6;
+        final int frameHeight= gp.TileSize*5;
+        drawDialogueWindow(frameX, frameY, frameWidth, frameHeight);
+        drawUpgradeScreen();
+
+        // SLOTS
+        final int slotXStart = frameX + 20;
+        final int slotYStart = frameY + 20;
+        int slotX = slotXStart;
+        int slotY = slotYStart;
+        int slotSize = gp.TileSize + 3;
+        // CURSOR
+        int cursorX = slotXStart + (slotSize * slotCol);
+        int cursorY = slotYStart + (slotSize * slotRow);
+        int cursorWidth = gp.TileSize;
+        int cursorHeight = gp.TileSize;
+        g2.setColor(Color.white);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight,10,10);
+
+        // ITEMS
+        for(int i = 0; i < gp.player.Inventory.length; i++){
+            for(int j = 0; j < gp.player.Inventory[i].length; j++){
+                if(gp.player.Inventory[i][j] != null){
+                    g2.drawImage(gp.player.Inventory[i][j].img, slotX, slotY, null);
+                    slotX += slotSize;
+                }
+            }
+            slotY += slotSize;
+            slotX = slotXStart;
+        }
+
+        // Item Description
+
+        int dFrameX = frameX;
+        int dFrameY = frameY + frameHeight + 20;
+        int dFrameWidth = frameWidth;
+        int dFrameHeight = gp.TileSize*4;
+        drawDialogueWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+        if(gp.player.Inventory[slotRow][slotCol] != null) {
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+            g2.setColor(Color.white);
+            dFrameY += gp.TileSize;
+            g2.drawString(gp.player.Inventory[slotRow][slotCol].name, dFrameX + 20, dFrameY);
+            dFrameY += 32;
+            for(String line : gp.player.Inventory[slotRow][slotCol].description.split("\n")) {
+                g2.drawString(line, dFrameX + 20, dFrameY);
+                dFrameY += 32;
+            }
+            if(gp.player.Inventory[slotRow][slotCol].attackScale != -1){
+                g2.drawString("Damage scaling : x" + gp.player.Inventory[slotRow][slotCol].attackScale,
+                        dFrameX + 20, frameY + frameHeight + dFrameHeight);
+            }
+
+        }
 
 
     }

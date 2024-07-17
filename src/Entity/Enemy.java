@@ -8,7 +8,12 @@ public class Enemy extends Entity{
 
     public void contactPlayer(){
         if(!gp.player.invincible) {
-            gp.player.HP -= damage + gp.player.resistance;
+
+            int dmg = damage - gp.player.resistance;
+            if(dmg < 0){
+                dmg = 0;
+            }
+            gp.player.HP -= dmg;
             gp.player.invincible = true;
         }
     }
