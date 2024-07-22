@@ -147,6 +147,9 @@ public class KeyHandler implements KeyListener{
             if(code == KeyEvent.VK_RIGHT && gp.ui.slotCol < 4){
                 gp.ui.slotCol++;
             }
+            if(code == KeyEvent.VK_E){
+                gp.player.selectItem();
+            }
 
         }
     }

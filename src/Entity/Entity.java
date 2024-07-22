@@ -140,8 +140,6 @@ public class Entity{
 
         if(dyingCounter > 60){
             alive = false;
-            dying = false;
-            
         }
 
     }

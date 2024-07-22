@@ -317,6 +317,10 @@ public class UI {
         for(int i = 0; i < gp.player.Inventory.length; i++){
             for(int j = 0; j < gp.player.Inventory[i].length; j++){
                 if(gp.player.Inventory[i][j] != null){
+                    if(gp.player.Inventory[i][j] == gp.player.currentWeapon){
+                        g2.setColor(Color.orange);
+                        g2.fillRoundRect(slotX, slotY, gp.TileSize, gp.TileSize, 10, 10);
+                    }
                     g2.drawImage(gp.player.Inventory[i][j].img, slotX, slotY, null);
                     slotX += slotSize;
                 }
@@ -331,8 +335,8 @@ public class UI {
         int dFrameY = frameY + frameHeight + 20;
         int dFrameWidth = frameWidth;
         int dFrameHeight = gp.TileSize*4;
-        drawDialogueWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
         if(gp.player.Inventory[slotRow][slotCol] != null) {
+            drawDialogueWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
             g2.setColor(Color.white);
             dFrameY += gp.TileSize;

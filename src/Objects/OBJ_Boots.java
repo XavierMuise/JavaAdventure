@@ -5,6 +5,7 @@ public class OBJ_Boots extends superObject{
     public OBJ_Boots(Panel gp) {
         super(gp);
         name = "Boots";
+        canPickUp = true;
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/Boots.png"));

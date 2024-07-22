@@ -16,6 +16,7 @@ public class superObject {
     public boolean Opened;
     public String description = "";
     public int attackScale = -1;
+    boolean canPickUp;
 
     public superObject(Panel gp){
         this.gp = gp;
@@ -63,6 +64,10 @@ public class superObject {
             e.printStackTrace();
         }
         return ScaledImg;
+    }
+
+    public boolean use(){
+        return false;
     }
 
 }

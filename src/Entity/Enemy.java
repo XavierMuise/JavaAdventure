@@ -7,7 +7,7 @@ public class Enemy extends Entity{
     }
 
     public void contactPlayer(){
-        if(!gp.player.invincible) {
+        if(!gp.player.invincible && !dying) {
 
             int dmg = damage - gp.player.resistance;
             if(dmg < 0){

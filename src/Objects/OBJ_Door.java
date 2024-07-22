@@ -7,6 +7,7 @@ public class OBJ_Door extends superObject{
         super(gp);
         name = "Door";
         Opened = false;
+        canPickUp = false;
         try{
             img = ImageIO.read(getClass().getResource("/Objects/doorClosed.png"));
             img = uTool.scaleImg(img, gp.TileSize, gp.TileSize);

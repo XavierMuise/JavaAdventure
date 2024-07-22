@@ -6,6 +6,7 @@ public class OBJ_hole extends superObject{
     public OBJ_hole(Panel gp){
         super(gp);
         name = "hole";
+        canPickUp = false;
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/PitHole.png"));

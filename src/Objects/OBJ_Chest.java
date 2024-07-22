@@ -6,7 +6,7 @@ public class OBJ_Chest extends superObject{
         super(gp);
         name = "Chest";
         Opened = false;
-
+        canPickUp = false;
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/chestClosed.png"));

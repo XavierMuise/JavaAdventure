@@ -86,6 +86,17 @@ public class Player extends Entity {
 
     }
 
+    public void selectItem(){
+        if(Inventory[gp.ui.slotRow][gp.ui.slotCol] != null && Inventory[gp.ui.slotRow][gp.ui.slotCol].attackScale != -1){
+            currentWeapon = Inventory[gp.ui.slotRow][gp.ui.slotCol];
+            updateStats();
+        } else if(Inventory[gp.ui.slotRow][gp.ui.slotCol] != null){
+            if(Inventory[gp.ui.slotRow][gp.ui.slotCol].use()) {
+                Inventory[gp.ui.slotRow][gp.ui.slotCol] = null;
+            }
+        }
+    }
+
     public void updateStats(){
         this.damage = strength * currentWeapon.attackScale;
         this.maxHP = vigor * 2;
@@ -321,8 +332,9 @@ public class Player extends Entity {
     }
 
     public void pickUpObject(int i){
-        if(i != 999){
-
+        if(i != 999 && Inventory[3][4] == null && gp.obj[i].canPickUp){
+            addItem(gp.obj[i]);
+            gp.obj[i] = null;
         }
     }
 
