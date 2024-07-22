@@ -16,6 +16,7 @@ public class Entity{
     public static final int player = 0;
     public static final int NPC = 1;
     public static final int enemy = 2;
+    public Projectile projectile;
 
     // STATE
     public String direction;

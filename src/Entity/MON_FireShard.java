@@ -18,6 +18,8 @@ public class MON_FireShard extends Enemy {
         solidArea.height = 42;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+        projectile = new PROJ_FireBall(gp);
+        gp.aSetter.addProj(projectile);
 
         getMONImage();
     }
@@ -43,6 +45,7 @@ public class MON_FireShard extends Enemy {
         actionCounter++;
 
         if (actionCounter == 120) {
+            projectile.set(worldX, worldY, direction, true, this);
             Random rand = new Random();
             int i = rand.nextInt(100) + 1;
             if (i <= 25) {

@@ -52,4 +52,13 @@ public class assetSetter {
         gp.mon[4] = new MON_FireShard(gp, gp.TileSize * 40, gp.TileSize * 8);
         gp.mon[5] = new MON_FireShard(gp, gp.TileSize * 35, gp.TileSize * 11);
     }
+
+    public void addProj(Projectile p){
+        for(int i = 0; i < gp.proj.length; i++){
+            if(gp.proj[i] == null){
+                gp.proj[i] = p;
+                return;
+            }
+        }
+    }
 }

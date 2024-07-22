@@ -5,7 +5,7 @@ public class KeyHandler implements KeyListener{
 
     public Panel gp;
 
-    public boolean upPressed, leftPressed, rightPressed, downPressed, shiftPressed, interactPressed, attackPressed;
+    public boolean upPressed, leftPressed, rightPressed, downPressed, shiftPressed, interactPressed;
     public boolean debugMode;
 
 
@@ -21,8 +21,15 @@ public class KeyHandler implements KeyListener{
 
         int code = e.getKeyCode(); // returns the int associated with the key pressed
 
+        if (code == KeyEvent.VK_ESCAPE) {
+            if(gp.gameState == gp.playState) {
+                gp.gameState = gp.pauseState;
+            } else if(gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
+        }
         // PLAY STATE
-        if(gp.gameState == gp.playState || gp.gameState == gp.pauseState) {
+        if(gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_W) {
                 upPressed = true;
             }
@@ -50,13 +57,7 @@ public class KeyHandler implements KeyListener{
             if(code == KeyEvent.VK_I){
                 gp.gameState = gp.inventoryState;
             }
-            if (code == KeyEvent.VK_ESCAPE) {
-                if(gp.gameState == gp.playState) {
-                    gp.gameState = gp.pauseState;
-                } else if(gp.gameState == gp.pauseState) {
-                    gp.gameState = gp.playState;
-                }
-            }
+
         }
 
         // DIALOGUE STATE

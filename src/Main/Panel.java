@@ -53,6 +53,7 @@ public class Panel extends JPanel implements Runnable{
     public NPC[] npc = new NPC[10];
     public Enemy[] mon = new Enemy[10];
     public MirrorChunk[] chunks = new MirrorChunk[10];
+    public Projectile[] proj = new Projectile[10];
 
     public Panel(){
         this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
@@ -141,6 +142,15 @@ public class Panel extends JPanel implements Runnable{
                     chunk.update();
                 }
             }
+            // PROJECTILES
+            for (Projectile projectile : proj) {
+                if (projectile != null) {
+                    if (projectile.alive) {
+                        projectile.update();
+                    }
+                }
+            }
+
         } else if (gameState == pauseState) {
 
         }
@@ -186,6 +196,12 @@ public class Panel extends JPanel implements Runnable{
             for(MirrorChunk chunk : chunks){
                 if(chunk != null){
                     chunk.draw(g2);
+                }
+            }
+
+            for(Projectile p : proj){
+                if(p != null && p.alive){
+                    p.draw(g2);
                 }
             }
 
