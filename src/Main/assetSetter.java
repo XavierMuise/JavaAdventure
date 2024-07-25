@@ -24,6 +24,9 @@ public class assetSetter {
         gp.obj[3].worldX = 11 * gp.TileSize;
         gp.obj[3].worldY = 11 * gp.TileSize;
 
+        gp.obj[4] = new OBJ_Boots(gp);
+        gp.obj[4].worldX = 9 * gp.TileSize;
+        gp.obj[4].worldY = 11 * gp.TileSize;
 
     }
 

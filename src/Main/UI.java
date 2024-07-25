@@ -22,6 +22,7 @@ public class UI {
 
     public int slotCol = 0;
     public int slotRow = 0;
+    public int subState = 0;
 
 
 
@@ -105,11 +106,11 @@ public class UI {
         }
 
         // DRAW SHARD COUNT
-        g2.drawImage(gp.chunks[0].down0, gp.TileSize * 14,0, gp.TileSize - gp.TileSize/4, gp.TileSize - gp.TileSize/4, null);
+        g2.drawImage(gp.chunks[0].down0, gp.TileSize * 18,0, gp.TileSize - gp.TileSize/4, gp.TileSize - gp.TileSize/4, null);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
         g2.setColor(Color.white);
-        g2.drawString("" + gp.player.shards, gp.TileSize * 14 + gp.TileSize/2 + 10, gp.TileSize - gp.TileSize/4 - 5);
+        g2.drawString("" + gp.player.shards, gp.TileSize * 18 + gp.TileSize/2 + 10, gp.TileSize - gp.TileSize/4 - 5);
 
 
     }
@@ -180,11 +181,78 @@ public class UI {
 
     }
     public void drawPauseScreen(){
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
-        String txt = "PAUSED";
-        int x = getXCenteredText(txt);
-        int y = gp.ScreenHeight/2 + gp.TileSize/2;
-        g2.drawString(txt, x, y);
+        final int frameX = gp.TileSize*6;
+        final int frameY = gp.TileSize;
+        final int frameWidth = gp.TileSize*8;
+        final int frameHeight= gp.TileSize*10;
+        drawDialogueWindow(frameX, frameY, frameWidth, frameHeight);
+
+        switch(subState){
+            case 0:
+                optionsTop(frameX, frameY);
+                break;
+            case 1: break;
+            case 2: break;
+        }
+
+    }
+    public void optionsTop(int frameX, int frameY){
+        int textX;
+        int textY;
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+        String text = "Options";
+        textX = getXCenteredText(text);
+        textY = frameY + gp.TileSize;
+        g2.drawString(text, textX, textY);
+
+        textX = frameX + gp.TileSize;
+        int CursorX = textX - gp.TileSize/2;
+        textY += gp.TileSize*2;
+        g2.drawString("FullScreen", textX, textY);
+        if(commandNum == 0){
+            g2.drawString(">", CursorX, textY);
+        }
+
+
+        g2.drawRect(frameX + gp.TileSize * 4, textY - gp.TileSize/2, gp.TileSize/2, gp.TileSize/2);
+        if(gp.fullScreen){
+            g2.fillRect(frameX + gp.TileSize * 4, textY - gp.TileSize/2, gp.TileSize/2, gp.TileSize/2);
+        }
+
+        textY += gp.TileSize;
+        g2.drawString("Music", textX, textY);
+        if(commandNum == 1){
+            g2.drawString(">", CursorX, textY);
+        }
+
+        textY += gp.TileSize;
+        g2.drawString("SE", textX, textY);
+        if(commandNum == 2){
+            g2.drawString(">", CursorX, textY);
+        }
+
+        textY += gp.TileSize;
+        g2.drawString("Controls", textX, textY);
+        if(commandNum == 3){
+            g2.drawString(">", CursorX, textY);
+        }
+
+        textY += gp.TileSize;
+        g2.drawString("Quit Game", textX, textY);
+        if(commandNum == 4){
+            g2.drawString(">", CursorX, textY);
+        }
+
+        textY += gp.TileSize*2;
+        g2.drawString("Back", textX, textY);
+        if(commandNum == 5){
+            g2.drawString(">", CursorX, textY);
+        }
+
+        // Full screen Checkbox
+
+
     }
     public int getXCenteredText(String text){
         int length  = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
@@ -218,7 +286,7 @@ public class UI {
     }
     public void drawUpgradeScreen(){
         final int frameX = gp.TileSize*2;
-        final int frameY = gp.TileSize*2;
+        final int frameY = gp.TileSize;
         final int frameWidth = gp.TileSize*6;
         final int frameHeight= gp.TileSize*10;
         drawDialogueWindow(frameX, frameY, frameWidth, frameHeight);
@@ -291,8 +359,8 @@ public class UI {
 
     }
     public void drawInventoryScreen(){
-        final int frameX = gp.TileSize*9;
-        final int frameY = gp.TileSize*2;
+        final int frameX = gp.TileSize*12;
+        final int frameY = gp.TileSize;
         final int frameWidth = gp.TileSize*6;
         final int frameHeight= gp.TileSize*5;
         drawDialogueWindow(frameX, frameY, frameWidth, frameHeight);

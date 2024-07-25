@@ -35,11 +35,11 @@ public class Player extends Entity {
         type = Entity.player;
         Inventory = new superObject[4][5];
         solidArea = new Rectangle();
-        solidArea.x = 8;
+        solidArea.x = 14;
         solidArea.y = 16;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 24;
+        solidArea.width = 20;
         solidArea.height = 24;
         attackArea = new Rectangle(36,36);
 
@@ -58,7 +58,7 @@ public class Player extends Entity {
         strength = 1;
         defense = 0;
 
-        shards = 1000;
+        shards = 0;
         nextLevelShards = 3 * level;
 
         maxHP = vigor * 2;
