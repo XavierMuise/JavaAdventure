@@ -16,6 +16,8 @@ public class MirrorChunk extends Entity{
     public void rest(){
         gp.player.HP = gp.player.maxHP;
         gp.gameState = gp.statsState;
+        gp.player.worldX = this.worldX;
+        gp.player.worldY = this.worldY + gp.TileSize;
         gp.aSetter.setMON();
     }
 }

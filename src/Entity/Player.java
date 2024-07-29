@@ -14,6 +14,7 @@ public class Player extends Entity {
     boolean hasBoots = false;
     public BufferedImage att_up_1, att_up_2, att_down_1, att_down_2, att_left_1, att_left_2, att_right_1, att_right_2;
     public superObject[][] Inventory;
+    public int latestChunk = 0;
 
     // ATTRIBUTES
     public int level;
@@ -105,7 +106,6 @@ public class Player extends Entity {
 
     }
 
-
     public void getPlayerImage(){
             up0 = SetUpImg("/Player/boy_up_0", gp.TileSize, gp.TileSize);
             up1 = SetUpImg("/Player/boy_up_1", gp.TileSize, gp.TileSize);
@@ -136,7 +136,6 @@ public class Player extends Entity {
             att_right_1 = SetUpImg("/Player/attack_right_1", gp.TileSize*2, gp.TileSize);
             att_right_2 = SetUpImg("/Player/attack_right_2", gp.TileSize*2, gp.TileSize);
     }
-
 
     public void update(){
 
@@ -256,6 +255,10 @@ public class Player extends Entity {
             }
         }
 
+        if(HP <= 0){
+            gp.gameState = gp.deathState;
+        }
+
         //Sprinting
         if(KH.shiftPressed && hasBoots){
             if(direction.equals("upLeft") || direction.equals("upRight") || direction.equals("downLeft") ||
@@ -363,6 +366,7 @@ public class Player extends Entity {
     public void restAtChunk(int i){
         if(i != 999){
             gp.chunks[i].rest();
+            latestChunk = i;
         }
     }
 
@@ -400,6 +404,10 @@ public class Player extends Entity {
         }
     }
 
+    public void respawn(){
+        gp.chunks[latestChunk].rest();
+        invincible = false;
+    }
 
     public void draw(Graphics2D g2, int TileSize){
         

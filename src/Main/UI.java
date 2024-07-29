@@ -18,7 +18,8 @@ public class UI {
 
     public String currentDialogue = "";
     public int attributeNum = 0;
-    public int commandNum = 0 ;
+    public int commandNum = 0;
+    public int deathNum = 0;
 
     public int slotCol = 0;
     public int slotRow = 0;
@@ -69,6 +70,9 @@ public class UI {
             drawHealthBar();
         } else if(gp.gameState == gp.inventoryState){
             drawInventoryScreen();
+            drawHealthBar();
+        } else if(gp.gameState == gp.deathState){
+            drawDeathScreen();
             drawHealthBar();
         }
     }
@@ -214,7 +218,7 @@ public class UI {
             g2.drawString(">", CursorX, textY);
         }
 
-
+        // checkbox
         g2.drawRect(frameX + gp.TileSize * 4, textY - gp.TileSize/2, gp.TileSize/2, gp.TileSize/2);
         if(gp.fullScreen){
             g2.fillRect(frameX + gp.TileSize * 4, textY - gp.TileSize/2, gp.TileSize/2, gp.TileSize/2);
@@ -250,7 +254,6 @@ public class UI {
             g2.drawString(">", CursorX, textY);
         }
 
-        // Full screen Checkbox
 
 
     }
@@ -420,6 +423,38 @@ public class UI {
             }
 
         }
+
+
+    }
+    public void drawDeathScreen(){
+        int textX;
+        int textY;
+
+        g2.setColor(Color.red);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
+        String text = "YOU DIED";
+        textX = getXCenteredText(text);
+        textY = gp.TileSize * 6;
+        g2.drawString(text, textX, textY);
+
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
+        text = "Respawn";
+        textX = gp.TileSize * 7;
+        textY = gp.TileSize * 8;
+        g2.drawString(text, textX, textY);
+        if(deathNum == 0){
+            g2.drawString(">", textX - gp.TileSize/3, textY);
+        }
+
+        text = "Quit";
+        textX = gp.TileSize * 11 + gp.TileSize/2;
+        g2.drawString(text, textX, textY);
+        if(deathNum == 1){
+            g2.drawString(">",textX - gp.TileSize/3, textY);
+        }
+
+
 
 
     }

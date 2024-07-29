@@ -58,6 +58,10 @@ public class KeyHandler implements KeyListener{
         if(gp.gameState == gp.pauseState){
             optionsState(code);
         }
+
+        if(gp.gameState == gp.deathState){
+            deathState(code);
+        }
     }
     public void playState(int code){
         if (code == KeyEvent.VK_W) {
@@ -203,6 +207,28 @@ public class KeyHandler implements KeyListener{
             gp.ui.commandNum--;
         }
 
+    }
+    public void deathState(int code){
+        if(code == KeyEvent.VK_ENTER){
+            switch(gp.ui.deathNum){
+                // respawn
+                case 0:
+                    gp.player.respawn();
+                    break;
+                // quit
+                case 1:
+                    Main.cg.saveConfig(gp);
+                    System.exit(0);
+                    break;
+
+            }
+        }
+        if(code == KeyEvent.VK_RIGHT && gp.ui.deathNum == 0){
+            gp.ui.deathNum = 1;
+        }
+        if(code == KeyEvent.VK_LEFT && gp.ui.deathNum == 1){
+            gp.ui.deathNum = 0;
+        }
     }
 
     public void keyReleased(KeyEvent e) {
