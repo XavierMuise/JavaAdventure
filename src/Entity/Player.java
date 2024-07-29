@@ -176,15 +176,15 @@ public class Player extends Entity {
             pickUpObject(objIndex);
 
             //CHECK NPC COLLISION
-            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc[gp.currentMap]);
             interactNPC(npcIndex);
 
             //CHECK ENEMY COLLISION
-            int enemyIndex = gp.cChecker.checkEntity(this, gp.mon);
+            int enemyIndex = gp.cChecker.checkEntity(this, gp.mon[gp.currentMap]);
             contactEnemy(enemyIndex);
 
             //CHECK CHUNK COLLISION
-            int chunkIndex = gp.cChecker.checkEntity(this, gp.chunks);
+            int chunkIndex = gp.cChecker.checkEntity(this, gp.chunks[gp.currentMap]);
             restAtChunk(chunkIndex);
 
 
@@ -302,7 +302,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
 
-            int monIndex = gp.cChecker.checkEntity(this, gp.mon);
+            int monIndex = gp.cChecker.checkEntity(this, gp.mon[gp.currentMap]);
             damageEnemy(monIndex);
 
 
@@ -321,13 +321,13 @@ public class Player extends Entity {
 
     public void damageEnemy(int i){
         if(i != 999) {
-            if(!gp.mon[i].invincible) {
-                gp.mon[i].HP -= damage;
-                gp.mon[i].invincible = true;
-                gp.mon[i].damageReaction();
-                if(gp.mon[i].HP <= 0){
-                    gp.mon[i].dying = true;
-                    shards += gp.mon[i].shardsDropped;
+            if(!gp.mon[gp.currentMap][i].invincible) {
+                gp.mon[gp.currentMap][i].HP -= damage;
+                gp.mon[gp.currentMap][i].invincible = true;
+                gp.mon[gp.currentMap][i].damageReaction();
+                if(gp.mon[gp.currentMap][i].HP <= 0){
+                    gp.mon[gp.currentMap][i].dying = true;
+                    shards += gp.mon[gp.currentMap][i].shardsDropped;
                 }
             }
         }
@@ -335,9 +335,9 @@ public class Player extends Entity {
     }
 
     public void pickUpObject(int i){
-        if(i != 999 && Inventory[3][4] == null && gp.obj[i].canPickUp){
-            addItem(gp.obj[i]);
-            gp.obj[i] = null;
+        if(i != 999 && Inventory[3][4] == null && gp.obj[gp.currentMap][i].canPickUp){
+            addItem(gp.obj[gp.currentMap][i]);
+            gp.obj[gp.currentMap][i] = null;
         }
     }
 
@@ -347,7 +347,7 @@ public class Player extends Entity {
             if(gp.KH.interactPressed) {
                 NPC = i;
                 gp.gameState = gp.dialogueState;
-                gp.npc[i].speak();
+                gp.npc[gp.currentMap][i].speak();
             }
         }
         gp.KH.interactPressed = false;
@@ -356,7 +356,7 @@ public class Player extends Entity {
     public void contactEnemy(int i){
         if(i != 999){
             if(!invincible) {
-                gp.mon[i].contactPlayer();
+                gp.mon[gp.currentMap][i].contactPlayer();
             } else {
                 iframeCounter++;
             }
@@ -365,7 +365,7 @@ public class Player extends Entity {
 
     public void restAtChunk(int i){
         if(i != 999){
-            gp.chunks[i].rest();
+            gp.chunks[gp.currentMap][i].rest();
             latestChunk = i;
         }
     }
@@ -405,7 +405,7 @@ public class Player extends Entity {
     }
 
     public void respawn(){
-        gp.chunks[latestChunk].rest();
+        gp.chunks[gp.currentMap][latestChunk].rest();
         invincible = false;
     }
 

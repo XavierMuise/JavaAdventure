@@ -110,7 +110,7 @@ public class UI {
         }
 
         // DRAW SHARD COUNT
-        g2.drawImage(gp.chunks[0].down0, gp.TileSize * 18,0, gp.TileSize - gp.TileSize/4, gp.TileSize - gp.TileSize/4, null);
+        g2.drawImage(gp.chunks[0][0].down0, gp.TileSize * 18,0, gp.TileSize - gp.TileSize/4, gp.TileSize - gp.TileSize/4, null);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
         g2.setColor(Color.white);

@@ -94,7 +94,7 @@ public class KeyHandler implements KeyListener{
     }
     public void dialogueState(int code){
         if(code == KeyEvent.VK_E && gp.player.NPC != 999){
-            gp.npc[gp.player.NPC].speak();
+            gp.npc[gp.currentMap][gp.player.NPC].speak();
         }
         if(code == KeyEvent.VK_E && gp.player.NPC == 999){
             gp.gameState = gp.playState;

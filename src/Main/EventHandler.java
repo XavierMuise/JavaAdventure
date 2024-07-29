@@ -28,15 +28,28 @@ public class EventHandler {
         if(distance > gp.TileSize){
             canTouchEvent = true;
         }
+        // world map
+        if(gp.currentMap == 0) {
+            if (hit(27, 16, "right") && canTouchEvent) {
+                damagePit(gp.dialogueState);
+                canTouchEvent = false;
+            }
 
-        if(hit(27,16, "right") && canTouchEvent){
-            damagePit(gp.dialogueState);
-            canTouchEvent = false;
+            if (hit(23, 12, "up") && canTouchEvent) {
+                healingPool(gp.dialogueState);
+                canTouchEvent = false;
+            }
+
+            if (hit(34, 38, "any") && canTouchEvent) {
+                teleport(1, 12, 13);
+            }
         }
 
-        if(hit(23,12, "up") && canTouchEvent){
-            healingPool(gp.dialogueState);
-            canTouchEvent = false;
+        // house
+        if(gp.currentMap == 1){
+            if (hit(12, 13, "down") && canTouchEvent) {
+                teleport(0, 34, 39);
+            }
         }
     }
 
@@ -76,6 +89,13 @@ public class EventHandler {
             gp.ui.currentDialogue = "The pool restored your HP!";
             gp.player.HP = gp.player.maxHP;
         }
+    }
+
+    public void teleport(int mapNum, int x, int y){
+        gp.currentMap = mapNum;
+        gp.player.worldX = x * gp.TileSize;
+        gp.player.worldY = y * gp.TileSize;
+
     }
 
 }

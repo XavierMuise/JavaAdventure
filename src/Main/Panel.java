@@ -28,6 +28,8 @@ public class Panel extends JPanel implements Runnable{
     public final int maxWorldCol = 50;
     public final int worldWidth = TileSize * maxScreenCol;
     public final int worldHeight = TileSize * maxScreenRow;
+    public final int maxMap = 10;
+    public int currentMap = 0;
 
     int FPS = 60;
 
@@ -55,11 +57,11 @@ public class Panel extends JPanel implements Runnable{
 
     // ENTITY AND OBJECT
     Player player = new Player(this, KH);
-    public superObject[] obj = new superObject[10];
-    public NPC[] npc = new NPC[10];
-    public Enemy[] mon = new Enemy[10];
-    public MirrorChunk[] chunks = new MirrorChunk[10];
-    public Projectile[] proj = new Projectile[10];
+    public superObject[][] obj = new superObject[maxMap][10];
+    public NPC[][] npc = new NPC[maxMap][10];
+    public Enemy[][] mon = new Enemy[maxMap][10];
+    public MirrorChunk[][] chunks = new MirrorChunk[maxMap][10];
+    public Projectile[][] proj = new Projectile[maxMap][10];
 
     public Panel(){
         this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
@@ -142,31 +144,31 @@ public class Panel extends JPanel implements Runnable{
             player.update();
 
             //NPC
-            for(NPC e : npc){
+            for(NPC e : npc[currentMap]){
                 if(e != null) {
                     e.update();
                 }
             }
             // ENEMIES
-            for(int i = 0; i < mon.length; i++){
-                if(mon[i] != null) {
-                    if(mon[i].alive && !mon[i].dying) {
-                        mon[i].update();
-                    } else if(!mon[i].alive) {
-                        mon[i] = null;
+            for(int i = 0; i < mon[currentMap].length; i++){
+                if(mon[currentMap][i] != null) {
+                    if(mon[currentMap][i] .alive && !mon[currentMap][i] .dying) {
+                        mon[currentMap][i] .update();
+                    } else if(!mon[currentMap][i] .alive) {
+                        mon[currentMap][i]  = null;
                     }
 
                 }
             }
 
             // chunks
-            for (MirrorChunk chunk : chunks) {
+            for (MirrorChunk chunk : chunks[currentMap]) {
                 if (chunk != null) {
                     chunk.update();
                 }
             }
             // PROJECTILES
-            for (Projectile projectile : proj) {
+            for (Projectile projectile : proj[currentMap]) {
                 if (projectile != null) {
                     if (projectile.alive) {
                         projectile.update();
@@ -191,31 +193,31 @@ public class Panel extends JPanel implements Runnable{
             tileM.draw(g2);
 
             //Objects
-            for (superObject superObject : obj) {
+            for (superObject superObject : obj[currentMap]) {
                 if (superObject != null) {
                     superObject.draw(g2, this);
                 }
             }
             // NPC
-            for(NPC entity : npc) {
+            for(NPC entity : npc[currentMap]) {
                 if (entity != null) {
                     entity.draw(g2);
                 }
             }
             // Enemies
-            for(Enemy entity : mon){
+            for(Enemy entity : mon[currentMap]){
                 if(entity != null) {
                     entity.draw(g2);
                 }
             }
             //chunks
-            for(MirrorChunk chunk : chunks){
+            for(MirrorChunk chunk : chunks[currentMap]){
                 if(chunk != null){
                     chunk.draw(g2);
                 }
             }
 
-            for(Projectile p : proj){
+            for(Projectile p : proj[currentMap]){
                 if(p != null && p.alive){
                     p.draw(g2);
                 }
