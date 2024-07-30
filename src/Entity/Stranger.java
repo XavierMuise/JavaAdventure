@@ -5,7 +5,7 @@ public class Stranger extends NPC {
     public Stranger(Panel gp){
         super(gp);
         direction = "down";
-        speed = 2;
+        speed = 5;
 
 
         // COORDINATES

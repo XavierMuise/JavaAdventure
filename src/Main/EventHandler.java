@@ -9,6 +9,10 @@ public class EventHandler {
     boolean canTouchEvent = true;
     int eventRectDefaultX, eventRectDefaultY;
 
+    public int tempMap = 0;
+    public int tempX = 0;
+    public int tempY = 0;
+
     public EventHandler(Panel gp){
         this.gp = gp;
         eventRect = new Rectangle();
@@ -41,7 +45,7 @@ public class EventHandler {
             }
 
             if (hit(34, 38, "any") && canTouchEvent) {
-                teleport(1, 12, 13);
+                teleport(1, 12, 12);
             }
         }
 
@@ -92,10 +96,10 @@ public class EventHandler {
     }
 
     public void teleport(int mapNum, int x, int y){
-        gp.currentMap = mapNum;
-        gp.player.worldX = x * gp.TileSize;
-        gp.player.worldY = y * gp.TileSize;
-
+        gp.gameState = gp.transitionState;
+        tempMap = mapNum;
+        tempX = x * gp.TileSize;
+        tempY = y * gp.TileSize;
     }
 
 }

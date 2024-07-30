@@ -79,7 +79,7 @@ public class TileManager {
         // INSIDE
         setUpTile(42, "house", false);
         setUpTile(43, "floor01", false);
-        setUpTile(44, "table", false);
+        setUpTile(44, "table", true);
     }
 
     public void setUpTile(int index, String imgPath, boolean collision){

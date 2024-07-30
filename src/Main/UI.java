@@ -24,6 +24,7 @@ public class UI {
     public int slotCol = 0;
     public int slotRow = 0;
     public int subState = 0;
+    public int transitionCounter = 0;
 
 
 
@@ -74,6 +75,8 @@ public class UI {
         } else if(gp.gameState == gp.deathState){
             drawDeathScreen();
             drawHealthBar();
+        } else if(gp.gameState == gp.transitionState){
+            drawTransition();
         }
     }
     public void drawHealthBar(){
@@ -456,6 +459,19 @@ public class UI {
 
 
 
+
+    }
+    public void drawTransition(){
+        transitionCounter++;
+        g2.setColor(new Color(0,0,0, transitionCounter * 5));
+        g2.fillRect(0,0, gp.ScreenWidth, gp.ScreenHeight);
+        if(transitionCounter == 50){
+            transitionCounter = 0;
+            gp.gameState = gp.playState;
+            gp.currentMap = gp.EH.tempMap;
+            gp.player.worldX = gp.EH.tempX;
+            gp.player.worldY = gp.EH.tempY;
+        }
 
     }
     public BufferedImage SetUpImg(String imgPath){

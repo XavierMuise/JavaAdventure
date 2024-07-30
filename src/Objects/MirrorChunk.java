@@ -18,6 +18,7 @@ public class MirrorChunk extends Entity{
         gp.gameState = gp.statsState;
         gp.player.worldX = this.worldX;
         gp.player.worldY = this.worldY + gp.TileSize;
+        gp.player.direction = "up";
         gp.aSetter.setMON();
     }
 }

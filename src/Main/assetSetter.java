@@ -28,6 +28,12 @@ public class assetSetter {
         gp.obj[0][4].worldX = 9 * gp.TileSize;
         gp.obj[0][4].worldY = 11 * gp.TileSize;
 
+        // HOUSE
+        gp.obj[1][0] = new OBJ_Door(gp, true);
+        gp.obj[1][0].worldX = 12 * gp.TileSize;
+        gp.obj[1][0].worldY = 13 * gp.TileSize;
+
+
     }
 
     public void setChunks(){
@@ -39,6 +45,11 @@ public class assetSetter {
     public void setNPC(){
         gp.npc[0][0] = new Rebecca(gp);
         gp.npc[0][1] = new Stranger(gp);
+
+        gp.npc[1][0] = new Merchant(gp);
+        gp.npc[1][0].worldX = gp.TileSize * 13;
+        gp.npc[1][0].worldY = gp.TileSize * 7;
+
     }
 
     public void setMON(){
