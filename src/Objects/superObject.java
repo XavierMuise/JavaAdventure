@@ -17,6 +17,7 @@ public class superObject {
     public String description = "";
     public int attackScale = -1;
     boolean canPickUp;
+    public int price;
 
     public superObject(Panel gp){
         this.gp = gp;

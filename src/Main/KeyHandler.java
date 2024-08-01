@@ -62,6 +62,10 @@ public class KeyHandler implements KeyListener{
         if(gp.gameState == gp.deathState){
             deathState(code);
         }
+
+        if(gp.gameState == gp.tradeState){
+            tradeState(code);
+        }
     }
     public void playState(int code){
         if (code == KeyEvent.VK_W) {
@@ -230,7 +234,33 @@ public class KeyHandler implements KeyListener{
             gp.ui.deathNum = 0;
         }
     }
+    public void tradeState(int code){
+        if(code == KeyEvent.VK_ESCAPE){
+            gp.gameState = gp.playState;
+        }
 
+        if(code == KeyEvent.VK_E){
+            if(gp.player.shards >= gp.ui.npc.Inventory[gp.ui.slotRow][gp.ui.slotCol].price && gp.player.Inventory[3][4] == null) {
+                gp.player.addItem(gp.ui.npc.Inventory[gp.ui.slotRow][gp.ui.slotCol]);
+                gp.player.shards -= gp.ui.npc.Inventory[gp.ui.slotRow][gp.ui.slotCol].price;
+            }
+
+        }
+
+        if(code == KeyEvent.VK_DOWN && gp.ui.slotRow < 3){
+            gp.ui.slotRow++;
+        }
+        if(code == KeyEvent.VK_UP && gp.ui.slotRow > 0){
+            gp.ui.slotRow--;
+        }
+        if(code == KeyEvent.VK_LEFT && gp.ui.slotCol > 0){
+            gp.ui.slotCol--;
+        }
+        if(code == KeyEvent.VK_RIGHT && gp.ui.slotCol < 4){
+            gp.ui.slotCol++;
+        }
+
+    }
     public void keyReleased(KeyEvent e) {
 
         int code = e.getKeyCode(); // returns the int associated with the key pressed

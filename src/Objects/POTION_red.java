@@ -5,6 +5,7 @@ public class POTION_red extends superObject {
         name = "[Red Potion]";
         description = "Heals 3 hearts";
         canPickUp = true;
+        price = 3;
     }
 
     public boolean use(){

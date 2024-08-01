@@ -15,6 +15,7 @@ public class UI {
     public int msgCount = 0;
     public boolean gameFinished = false;
     BufferedImage FullHeart, HalfHeart, EmptyHeart;
+    public Entity npc;
 
     public String currentDialogue = "";
     public int attributeNum = 0;
@@ -77,6 +78,9 @@ public class UI {
             drawHealthBar();
         } else if(gp.gameState == gp.transitionState){
             drawTransition();
+        } else if(gp.gameState == gp.tradeState){
+            drawTradeScreen();
+            drawHealthBar();
         }
     }
     public void drawHealthBar(){
@@ -471,6 +475,64 @@ public class UI {
             gp.currentMap = gp.EH.tempMap;
             gp.player.worldX = gp.EH.tempX;
             gp.player.worldY = gp.EH.tempY;
+        }
+
+    }
+    public void drawTradeScreen(){
+        final int frameX = gp.TileSize*12;
+        final int frameY = gp.TileSize;
+        final int frameWidth = gp.TileSize*6;
+        final int frameHeight= gp.TileSize*5;
+        drawDialogueWindow(frameX, frameY, frameWidth, frameHeight);
+
+        // SLOTS
+        final int slotXStart = frameX + 20;
+        final int slotYStart = frameY + 20;
+        int slotX = slotXStart;
+        int slotY = slotYStart;
+        int slotSize = gp.TileSize + 3;
+        // CURSOR
+        int cursorX = slotXStart + (slotSize * slotCol);
+        int cursorY = slotYStart + (slotSize * slotRow);
+        int cursorWidth = gp.TileSize;
+        int cursorHeight = gp.TileSize;
+        g2.setColor(Color.white);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight,10,10);
+
+        // ITEMS
+        for(int i = 0; i < npc.Inventory.length; i++){
+            for(int j = 0; j < npc.Inventory[i].length; j++){
+                if(npc.Inventory[i][j] != null){
+                    g2.drawImage(npc.Inventory[i][j].img, slotX, slotY, null);
+                    slotX += slotSize;
+                }
+            }
+            slotY += slotSize;
+            slotX = slotXStart;
+        }
+
+        // Item Description
+
+        int dFrameX = frameX;
+        int dFrameY = frameY + frameHeight + 20;
+        int dFrameWidth = frameWidth;
+        int dFrameHeight = gp.TileSize*4;
+        if(npc.Inventory[slotRow][slotCol] != null) {
+            drawDialogueWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+            g2.setColor(Color.white);
+            dFrameY += gp.TileSize;
+            g2.drawString(npc.Inventory[slotRow][slotCol].name, dFrameX + 20, dFrameY);
+            dFrameY += 32;
+            for(String line : npc.Inventory[slotRow][slotCol].description.split("\n")) {
+                g2.drawString(line, dFrameX + 20, dFrameY);
+                dFrameY += 32;
+            }
+            g2.drawString("Price : " + npc.Inventory[slotRow][slotCol].price,
+                    dFrameX + 20, frameY + frameHeight + dFrameHeight);
+
+
         }
 
     }

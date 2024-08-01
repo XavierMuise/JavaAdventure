@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Entity{
-
+    public superObject[][] Inventory;
     public Panel gp;
     public int worldX,worldY; // coordinates
     public Rectangle solidArea = new Rectangle(0,0 , 48, 48);
@@ -17,6 +17,7 @@ public class Entity{
     public static final int NPC = 1;
     public static final int enemy = 2;
     public Projectile projectile;
+
 
     // STATE
     public String direction;

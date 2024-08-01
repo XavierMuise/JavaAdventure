@@ -54,6 +54,7 @@ public class Panel extends JPanel implements Runnable{
     public final int inventoryState = 5;
     public final int deathState = 6;
     public final int transitionState = 7;
+    public final int tradeState = 8;
 
 
     // ENTITY AND OBJECT

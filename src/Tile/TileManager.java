@@ -125,15 +125,11 @@ public class TileManager {
         catch(Exception ignored){
 
         }
-
-
     }
     public void draw(Graphics g2){
 
        int worldCol = 0;
        int worldRow = 0;
-
-
 
        while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow){
 

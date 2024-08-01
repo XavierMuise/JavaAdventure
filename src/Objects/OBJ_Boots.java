@@ -7,6 +7,7 @@ public class OBJ_Boots extends superObject{
         name = "[Boots]";
         canPickUp = true;
         description = "Boots that can help \nyou run faster. \nhold SHIFT to use them";
+        price = 20;
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/Boots.png"));

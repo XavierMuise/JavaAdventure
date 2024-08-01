@@ -8,6 +8,7 @@ public class OBJ_Key extends superObject{
         name = "[Key]";
         description = "Might be able to \nunlock a chest or \ndoor";
         canPickUp = true;
+        price = 5;
 
         try{
             img = ImageIO.read(getClass().getResource("/Objects/Key.png"));

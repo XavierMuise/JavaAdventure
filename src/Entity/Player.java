@@ -13,7 +13,6 @@ public class Player extends Entity {
     public int NPC;
     boolean hasBoots = false;
     public BufferedImage att_up_1, att_up_2, att_down_1, att_down_2, att_left_1, att_left_2, att_right_1, att_right_2;
-    public superObject[][] Inventory;
     public int latestChunk = 0;
 
     // ATTRIBUTES
@@ -59,7 +58,7 @@ public class Player extends Entity {
         strength = 1;
         defense = 0;
 
-        shards = 0;
+        shards = 100;
         nextLevelShards = 3 * level;
 
         maxHP = vigor * 2;

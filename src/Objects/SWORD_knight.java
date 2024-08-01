@@ -7,5 +7,6 @@ public class SWORD_knight extends superObject{
         name = "[Knight's Sword]";
         description = "Sword used in the \ngreat Mirror war. \nIn good condition.";
         canPickUp = true;
+        price = 25;
     }
 }
