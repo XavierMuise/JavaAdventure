@@ -41,6 +41,7 @@ public class Panel extends JPanel implements Runnable{
     Thread gameThread; // Keeps the program running til something stops it
     CollisionChecker cChecker = new CollisionChecker(this);
     assetSetter aSetter = new assetSetter(this);
+    Map map =  new Map(this);
     UI ui = new UI(this);
     public EventHandler EH = new EventHandler(this);
 
@@ -55,6 +56,7 @@ public class Panel extends JPanel implements Runnable{
     public final int deathState = 6;
     public final int transitionState = 7;
     public final int tradeState = 8;
+    public final int mapState = 9;
 
 
     // ENTITY AND OBJECT
@@ -189,6 +191,8 @@ public class Panel extends JPanel implements Runnable{
 
         if(gameState == titleState) {
             ui.draw(g2);
+        } else if(gameState == mapState){
+            map.drawFullMapScreen(g2);
         } else {
 
             //Tiles

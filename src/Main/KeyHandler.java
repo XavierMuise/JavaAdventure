@@ -66,6 +66,10 @@ public class KeyHandler implements KeyListener{
         if(gp.gameState == gp.tradeState){
             tradeState(code);
         }
+
+        if(gp.gameState == gp.mapState){
+            mapState(code);
+        }
     }
     public void playState(int code){
         if (code == KeyEvent.VK_W) {
@@ -94,6 +98,9 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_I){
             gp.gameState = gp.inventoryState;
+        }
+        if(code == KeyEvent.VK_M){
+            gp.gameState = gp.mapState;
         }
     }
     public void dialogueState(int code){
@@ -290,5 +297,10 @@ public class KeyHandler implements KeyListener{
             debugMode = false;
         }
 
+    }
+    public void mapState(int code){
+        if(code == KeyEvent.VK_ESCAPE){
+            gp.gameState = gp.playState;
+        }
     }
 }

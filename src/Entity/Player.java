@@ -3,6 +3,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+import static java.lang.Thread.sleep;
+
 
 public class Player extends Entity {
 
@@ -407,6 +409,7 @@ public class Player extends Entity {
         gp.chunks[gp.currentMap][latestChunk].rest();
         invincible = false;
     }
+
 
     public void draw(Graphics2D g2, int TileSize){
         
