@@ -248,8 +248,9 @@ public class KeyHandler implements KeyListener{
 
         if(code == KeyEvent.VK_E){
             if(gp.player.shards >= gp.ui.npc.Inventory[gp.ui.slotRow][gp.ui.slotCol].price && gp.player.Inventory[3][4] == null) {
-                gp.player.addItem(gp.ui.npc.Inventory[gp.ui.slotRow][gp.ui.slotCol]);
-                gp.player.shards -= gp.ui.npc.Inventory[gp.ui.slotRow][gp.ui.slotCol].price;
+                if(gp.player.canObtain(gp.ui.npc.Inventory[gp.ui.slotRow][gp.ui.slotCol])) {
+                    gp.player.shards -= gp.ui.npc.Inventory[gp.ui.slotRow][gp.ui.slotCol].price;
+                }
             }
 
         }

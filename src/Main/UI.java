@@ -401,6 +401,23 @@ public class UI {
                     }
                     g2.drawImage(gp.player.Inventory[i][j].img, slotX, slotY, null);
                     slotX += slotSize;
+
+                if(gp.player.Inventory[i][j].stackable){
+                    g2.setFont(g2.getFont().deriveFont(32f));
+
+                    int amountX;
+                    int amountY;
+                    String s = "" + gp.player.Inventory[i][j].count;
+                    amountX = slotX - gp.TileSize/4;
+                    amountY = slotY + gp.TileSize;
+
+                    g2.setColor(new Color(60,60,60));
+                    g2.drawString(s, amountX, amountY);
+
+                    g2.setColor(Color.white);
+                    g2.drawString(s, amountX - 3, amountY - 3);
+
+                }
                 }
             }
             slotY += slotSize;

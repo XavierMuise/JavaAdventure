@@ -6,5 +6,7 @@ public class SWORD_broken extends superObject {
         img = SetUpImg("/Objects/broken_sword");
         name = "[Broken Sword]";
         description = "Rusty old sword you \nfound on the floor.";
+        stackable = false;
+        canPickUp = true;
     }
 }

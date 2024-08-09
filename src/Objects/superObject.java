@@ -18,6 +18,8 @@ public class superObject {
     public int attackScale = -1;
     boolean canPickUp;
     public int price;
+    public boolean stackable = false;
+    public int count = 1;
 
     public superObject(Panel gp){
         this.gp = gp;

@@ -69,14 +69,12 @@ public class Player extends Entity {
         resistance = defense / 3;
         currentWeapon = new SWORD_broken(gp);
         damage = strength * currentWeapon.attackScale;
-        addItem(new OBJ_Key(gp));
-        addItem(currentWeapon);
-
-
+        canObtain(currentWeapon);
     }
 
     public void addItem(superObject item){
         // add item to first available inventory slot
+
         for(int i = 0; i < Inventory.length; i++){
             for(int j = 0; j < Inventory[i].length; j++){
                 if(Inventory[i][j] == null){
@@ -94,7 +92,11 @@ public class Player extends Entity {
             updateStats();
         } else if(Inventory[gp.ui.slotRow][gp.ui.slotCol] != null){
             if(Inventory[gp.ui.slotRow][gp.ui.slotCol].use()) {
-                Inventory[gp.ui.slotRow][gp.ui.slotCol] = null;
+                if(Inventory[gp.ui.slotRow][gp.ui.slotCol].stackable && Inventory[gp.ui.slotRow][gp.ui.slotCol].count > 1){
+                    Inventory[gp.ui.slotRow][gp.ui.slotCol].count--;
+                } else {
+                    Inventory[gp.ui.slotRow][gp.ui.slotCol] = null;
+                }
             }
         }
     }
@@ -336,8 +338,7 @@ public class Player extends Entity {
     }
 
     public void pickUpObject(int i){
-        if(i != 999 && Inventory[3][4] == null && gp.obj[gp.currentMap][i].canPickUp){
-            addItem(gp.obj[gp.currentMap][i]);
+        if(i != 999 && canObtain(gp.obj[gp.currentMap][i]) && gp.obj[gp.currentMap][i].canPickUp){
             gp.obj[gp.currentMap][i] = null;
         }
     }
@@ -408,6 +409,42 @@ public class Player extends Entity {
     public void respawn(){
         gp.chunks[gp.currentMap][latestChunk].rest();
         invincible = false;
+    }
+
+    public int[] searchItem(String itemName){
+        int[] itemIndex = new int[2];
+        itemIndex[0] = -1;
+        itemIndex[1] = -1;
+        for(int i = 0; i < Inventory.length; i++){
+            for(int j = 0; j < Inventory[i].length; j++){
+                if(Inventory[i][j] != null && Inventory[i][j].name.equals(itemName)){
+                    itemIndex[0] = i;
+                    itemIndex[1] = j;
+                    break;
+                }
+            }
+        }
+        return itemIndex;
+    }
+
+    public boolean canObtain(superObject item){
+        boolean canObtain = false;
+
+        if(item.stackable){
+            int[] index = searchItem(item.name);
+            if(index[0] != -1 && Inventory[index[0]][index[1]].count < 9){
+                Inventory[index[0]][index[1]].count++;
+                canObtain = true;
+            } else if(index[0] == -1){
+                addItem(item);
+                canObtain = true;
+            }
+
+        } else if(item.canPickUp){
+            addItem(item);
+            canObtain = true;
+        }
+        return canObtain;
     }
 
 
